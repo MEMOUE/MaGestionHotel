@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}visualiser-facture{% endblock %}
+{% block content %}
+    <p class="text-center orange fs-2">Recaputulatif de la facture</p>
+    <div class="container">
+        <div class="row offset-md-3">
+            <table class="border w-75 m-2 fs-3">
+                <tr>
+                    <td class="fw-bold">Nom et Prenom </td>
+                    <td> : </td>
+                    <td>{{ obj.nom_client }} {{ obj.prenom_client }}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Adresse </td>
+                    <td> : </td>
+                    <td>{{ obj.adresse_client }}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Date réservation </td>
+                    <td> : </td>
+                    <td>{{ obj.date_reservation }}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Date d'arrivée </td>
+                    <td> : </td>
+                    <td>{{ obj.date_arrivee }}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Chambre </td>
+                    <td> : </td>
+                    <td>{{ obj.chambre }}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Nombre de jour </td>
+                    <td> : </td>
+                    <td>{{ obj.nombre_jours }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <a class="btn m-1 btn-outline-secondary" href="{% url 'facture_pdf' obj.id %}">Impimer la facture</a>
+                    </td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}
