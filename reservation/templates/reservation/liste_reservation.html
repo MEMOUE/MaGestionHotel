@@ -15,8 +15,9 @@
                     <th>Adresse</th>
                     <th>Date de réservation</th>
                     <th>Date d'arrivée</th>
-                    <th>Chambre</th>
+                    <th>N°Chambre</th>
                     <th>Nb jour</th>
+                    <th>Statut</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -31,11 +32,12 @@
                         <td>{{ reservation.date_arrivee }}</td>
                         <td>{{ reservation.chambre }}</td>
                         <td>{{ reservation.nombre_jours }}</td>
+                        <td>{{ reservation.statut }}</td>
                         <td>
                             <a href="{% url 'modifier_reservation' reservation.id %}" class="btn btn-primary">Modifier</a>
                             <a href="{% url 'supprimer_reservation' reservation.id %}" class="btn btn-danger">Supprimer</a>
-                            <a href="/copier_reservation_dans_historique/{{ reservation.id }}" class="btn btn-success">Terminer</a>
-                            <a href="{% url 'facture_pdf' reservation.id %}" class="btn btn-info">Facture<a>
+                            <a href="/reservation/copier_reservation_dans_historique/{{ reservation.id }}" class="btn btn-success">Terminer</a>
+                            <a href="{% url 'facture_pdf' reservation.id %}" class="btn btn-info">Facture</a>
                         </td>
                     </tr>
                     

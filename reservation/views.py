@@ -1,13 +1,12 @@
 import io
 from datetime import datetime
-
 from django.http import FileResponse
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views import View
 from reportlab.pdfgen import canvas
-
 from reservation.forms import ReservationForm
 from reservation.models import Reservation
+from .models import HistoriqueReservation
+from chambre.models import Chambre
 
 
 # Create your views here.
@@ -78,4 +77,81 @@ def genere_facture(request, id):
     c.save()
 
     buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename=obj.prenom_client+"_facture.pdf")
+    return FileResponse(buffer, as_attachment=True, filename=obj.prenom_client + "_facture.pdf")
+
+
+def copier_reservation_dans_historique(request, reservation_id):
+    try:
+        reservation = Reservation.objects.get(id=reservation_id)
+
+        historique_reservation = HistoriqueReservation(
+
+            nom_client=reservation.nom_client,
+            prenom_client=reservation.prenom_client,
+            adresse_client=reservation.adresse_client,
+            date_reservation=reservation.date_reservation,
+            date_arrivee=reservation.date_arrivee,
+            nombre_jours=reservation.nombre_jours,
+            chambre=reservation.chambre
+
+        )
+
+        historique_reservation.save()
+        reservation.delete()
+
+        return render(request, 'reservation/liste_reservation.html')  # Rediriger vers la liste des réservations
+    except Reservation.DoesNotExist:
+        return redirect('reservation/liste_reservation.html')  # Gérer le cas où la réservation n'existe pas
+
+
+def liste_historique_reservations(request):
+    historique_reservations = HistoriqueReservation.objects.all()
+
+    context = {
+        'historique_reservations': historique_reservations
+    }
+
+    return render(request, 'reservation/historique_reservations.html', context)
+
+
+# Gestion de planning
+def planning(request):
+    planning_data = []
+    chambres = Chambre.objects.all()
+    reservations = Reservation.objects.all()
+    historiques = HistoriqueReservation.objects.all()
+
+    # Création d'une collection de dates uniques pour les réservations
+    unique_dates = []
+    for reservation in reservations:
+        if reservation.date_reservation not in unique_dates:
+            unique_dates.append(reservation.date_reservation)
+
+    # Tri des dates uniques dans l'ordre croissant
+
+    # Création d'une collection de dates uniques pour les historiques
+    unique_dates_hist = []
+    for historique in historiques:
+        if historique.date_reservation not in unique_dates_hist:
+            unique_dates.append(historique.date_reservation)
+
+    # Tri des dates uniques
+    unique_dates.sort()
+
+    planning_data.append(
+        {
+            'chambres': chambres,
+            'reservations': reservations,
+            'unique_dates': unique_dates,
+            'unique_dates_hist': unique_dates_hist,
+            'historiques': historiques
+        }
+    )
+    context = {
+        'planning_data': planning_data
+    }
+
+    return render(request, 'reservation/planning.html', context)
+
+#Representaion statistique des données
+

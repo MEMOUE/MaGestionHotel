@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistiques des Réservations</title>
+</head>
+<body>
+    <h1>Statistiques des Réservations</h1>
+
+    <form method="get" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Générer le graphique</button>
+    </form>
+
+    {% if img_url %}
+        <img src="{{ img_url }}" alt="Graphique" width="800">
+    {% endif %}
+</body>
+</html>
+
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}

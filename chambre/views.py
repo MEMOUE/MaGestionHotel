@@ -9,7 +9,7 @@ def chambre_view(request):
         form = ChambreForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/liste_chambre')
+            return redirect('liste_chambre')
     else:
         form = ChambreForm()
     return render(request, 'chambre/chambre.html', {'form': form})

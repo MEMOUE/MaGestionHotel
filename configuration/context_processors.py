@@ -1,10 +1,10 @@
 from configuration.models import Configuration
 
-
 def configuration_hotel(request):
-    elements = Configuration.objects.all()
-    for element in elements:
-        obj = element.id
+    # Obtenir le dernier objet Configuration en utilisant l'ordre par ID décroissant
+    try:
+        configuration = Configuration.objects.latest('id')
+    except Configuration.DoesNotExist:
+        configuration = None
 
-    configuration = Configuration.objects.get(id=obj)
     return {'configuration': configuration}

@@ -10,7 +10,6 @@ class RestaurantAdmin(admin.ModelAdmin):
     list_display = ("nom_menu", "type", "quantite", "prix", "date")
     search_fields = ["nom_menu", "type", "prix"]
 
-
     class Media:
         js = ("js/admin.js", )
         css = {

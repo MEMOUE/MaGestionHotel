@@ -4,7 +4,6 @@ from django.urls import reverse
 
 # Create your models here.
 
-
 class Configuration(models.Model):
     nom = models.CharField(max_length=100)
     telephone = models.CharField(max_length=100, blank=True)

@@ -27,9 +27,10 @@
                         <td>{{ chambre.get_statut_display }}</td>
                         <td>{{ chambre.prix }}</td>
                         <td>{{ chambre.date }}</td>
-                        <td class="text-white{% if chambre.etat == 'libre' %}chambre-libre{% else %}chambre-occupee{% endif %}">
+                        <td {% if chambre.etat == 'libre' %}class="text-green"{% else %}class="text-red"{% endif %}>
                             {{ chambre.get_etat_display }}
                         </td>
+                        
                         
                     </tr>
                     

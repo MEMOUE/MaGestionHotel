@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des réservations dans l'historique</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: black;
+            color: orange;
+        }
+        h1 {
+            margin-top: 50px;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: black;
+            border: 1px solid orange;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Liste des réservations dans l'historique</h1>
+        <ul>
+            {% for reservation in historique_reservations %}
+                <li>
+                    <strong>ID :</strong> {{ reservation.id }}<br>
+                    <strong>Prenom :</strong> {{ reservation.prenom_client }}<br>
+                    <strong>Nom :</strong> {{ reservation.nom_client }}<br>
+                    <strong>Date de réservation :</strong> {{ reservation.date_reservation }}<br>
+                    <strong>Date d'arrivée :</strong> {{ reservation.date_arrivee }}<br>
+                    <strong>Nombre d'heures :</strong> {{ reservation.nombre_heures }}<br>
+                    <strong>Nombre de jours :</strong> {{ reservation.nombre_jours }}<br>
+                    <!-- Afficher d'autres informations pertinentes -->
+                </li>
+            {% empty %}
+                <li>Aucune réservation dans l'historique.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
