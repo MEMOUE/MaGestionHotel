@@ -68,3 +68,24 @@ footer{
 .chambre-occupee{
     background-color: var(--rouge);
 }
+
+/* la page planning */
+
+ table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+ .reservation-confirmed {
+    background-color: green;
+}
+
+.reservation-not-confirmed {
+    background-color: yellow;
+}

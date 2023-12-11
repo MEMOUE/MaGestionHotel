@@ -5,24 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Planning</title>
     <!-- Inclure les liens vers les fichiers CSS de Bootstrap -->
+    {% load static %}
+     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
 
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-
-
-    </style>
 </head>
 <body>
-    <div >
+  <!-- la page planning  <div >
         <h1 class="text-center mt-4 mb-4">Tableau de Bord </h1>
         <table class="table table-striped">
             <thead>
@@ -50,7 +39,7 @@
                             {% for data in planning_data %}
                                 {% for date in data.unique_dates %}
                                     {% if date == reservation.date_reservation %}
-                                        <td style="background-color: {% if reservation.statut == 'confirmé' %} yellow {% else %} green {% endif %};">
+                                        <td class="{% if reservation.statut == 'confirmé' %}reservation-confirmed{% else %}reservation-not-confirmed{% endif %}">
                                          {{ reservation.prenom_client }} {{ reservation.nom_client }}
                                         </td>
                                     {% else %}
@@ -66,6 +55,51 @@
             {% endfor %}
         {% endfor %}
 
+            </tbody>
+        </table>
+    </div> -->
+ <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+
+    </style>
+
+    <div>
+        <h1 class="container-fluid bg-dark text-white text-center mt-4 mb-4">Tableau de Bord</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>N° Chambre</th>
+                    <th>Prix Chambre</th>
+                    {% for date in dates_uniques %}
+                        <th>{{ date }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in planning_data %}
+                    <tr>
+                        <th>{{ data.numero_chambre }}</th>
+                        <th>{{ data.prix }}</th>
+                        {% for reservation in data.reservations %}
+                            {% if reservation.date_reservation == data.date_reservation %}
+                             <td class="{% if reservation.statut == 'confirmé' %}bg-warning{% elif reservation.statut == 'reservé' %}bg-success{% endif %}">
+                                {{ reservation.nom_client }} {{ reservation.prenom_client }}
+                            </td>
+                            {% endif %}
+                        {% endfor %}
+
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

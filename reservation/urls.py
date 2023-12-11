@@ -15,5 +15,5 @@ urlpatterns = [
     path('copier_reservation_dans_historique/<int:reservation_id>/', views.copier_reservation_dans_historique, name='copier_reservation_dans_historique'),
     path('historique_reservations/', liste_historique_reservations, name='historique_reservations'),
 
-    path('planning/',planning, name='planning')
+    path('planning/',planning, name='planning'),
 ]

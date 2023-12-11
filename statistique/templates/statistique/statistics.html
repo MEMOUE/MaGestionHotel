@@ -1,26 +1,35 @@
 {% extends "base.html" %}
 
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistiques des Réservations</title>
-</head>
-<body>
-    <h1>Statistiques des Réservations</h1>
-
-    <form method="get" action="">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Générer le graphique</button>
-    </form>
-
-    {% if img_url %}
-        <img src="{{ img_url }}" alt="Graphique" width="800">
-    {% endif %}
-</body>
-</html>
-
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form method="post" action="{% url 'statistics' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="date_debut" class="form-label">Date de début :</label>
+                    <input type="date" class="form-control" name="date_debut" id="date_debut">
+                </div>
+                <div class="mb-3">
+                    <label for="date_fin" class="form-label">Date de fin :</label>
+                    <input type="date" class="form-control" name="date_fin" id="date_fin">
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm">Générer le graphique</button>
+            </form>
+        </div>
+    </div>
+    <div class="row justify-content-center mt-4">
+        <!-- Ajoutez ici l'espace d'affichage de vos graphiques -->
+        <div class="col-md-8">
+             <div id="plotly-graph"></div>
+                <script>
+                    var graph_data = {{ graph_json|safe }};
+                    Plotly.newPlot('plotly-graph', graph_data.data, graph_data.layout);
+                </script>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
 {% block footer %}
     {% include "footer.html" %}

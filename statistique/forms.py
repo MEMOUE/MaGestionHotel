@@ -1,15 +1,11 @@
 from django import forms
 from .models import Statistique
 
-
-class Statistiqueform(forms.Form):
+class StatistiqueForm(forms.ModelForm):
     class Meta:
         model = Statistique
         fields = "__all__"
         widgets = {
-            'date_debut': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': ' date de debut'}),
-            'date_fin': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': ' date de fin'}),
-
+            'date_debut': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'date_fin': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
         }
-
-

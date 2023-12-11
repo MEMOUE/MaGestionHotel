@@ -116,42 +116,62 @@ def liste_historique_reservations(request):
 
 # Gestion de planning
 def planning(request):
-    planning_data = []
     chambres = Chambre.objects.all()
     reservations = Reservation.objects.all()
     historiques = HistoriqueReservation.objects.all()
 
-    # Création d'une collection de dates uniques pour les réservations
-    unique_dates = []
-    for reservation in reservations:
-        if reservation.date_reservation not in unique_dates:
-            unique_dates.append(reservation.date_reservation)
+    dates_reservations = set(reservation.date_reservation for reservation in reservations)
+    dates_historiques = set(historique.date_reservation for historique in historiques)
+    dates_uniques = sorted(dates_reservations.union(dates_historiques))
 
-    # Tri des dates uniques dans l'ordre croissant
-
-    # Création d'une collection de dates uniques pour les historiques
-    unique_dates_hist = []
-    for historique in historiques:
-        if historique.date_reservation not in unique_dates_hist:
-            unique_dates.append(historique.date_reservation)
-
-    # Tri des dates uniques
-    unique_dates.sort()
-
-    planning_data.append(
-        {
-            'chambres': chambres,
-            'reservations': reservations,
-            'unique_dates': unique_dates,
-            'unique_dates_hist': unique_dates_hist,
-            'historiques': historiques
+    planning_data = []
+    for chambre in chambres:
+        chambre_data = {
+            'numero_chambre': chambre.numero_chambre,
+            'prix': chambre.prix,
+            'reservations': [],
+            'historiques': [],
         }
-    )
-    context = {
-        'planning_data': planning_data
-    }
+        for date in dates_uniques:
+            reservation = reservations.filter(chambre=chambre, date_reservation=date).first()
+            historique = historiques.filter(chambre=chambre, date_reservation=date).first()
 
+            if reservation:
+                chambre_data['reservations'].append({
+                    'date': date,
+                    'nom_client': reservation.nom_client,
+                    'prenom_client': reservation.prenom_client,
+                    'statut': reservation.statut,
+                })
+            else:
+                chambre_data['reservations'].append({
+                    'date': date,
+                    'nom_client': '',
+                    'prenom_client': '',
+                    'statut': 'vide',
+                })
+
+            if historique:
+                chambre_data['historiques'].append({
+                    'date': date,
+                    'nom_client': historique.nom_client,
+                    'prenom_client': historique.prenom_client,
+                    'statut': 'historique',
+                })
+            else:
+                chambre_data['historiques'].append({
+                    'date': date,
+                    'nom_client': '',
+                    'prenom_client': '',
+                    'statut': 'vide',
+                })
+
+        planning_data.append(chambre_data)
+
+    context = {'planning_data': planning_data, 'dates_uniques': dates_uniques}
     return render(request, 'reservation/planning.html', context)
+
+
 
 #Representaion statistique des données
 
