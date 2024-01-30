@@ -1,5 +1,4 @@
 {% load static %}
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -19,7 +18,7 @@
                     <img src="{{ configuration.image.url }}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
                     {{ configuration.nom }}
                 </a>
-                <ul class="nav justify-content-end">
+                <ul class="nav jus tify-content-end">
                   <li class="nav-item">
                     <a class="nav-link orange" href="{% url 'home-users' %}">Bienvenue : {{ user.username }}</a>
                   </li>

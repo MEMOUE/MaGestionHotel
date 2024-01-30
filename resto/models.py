@@ -1,7 +1,11 @@
 from django.db import models
 
+from HotelPlus import settings
+
+
 # Create your models here.
 class Restaurant(models.Model):
+    proprietaire = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     TYPE_MENU = (
         ("Boisson", "Boisson"),
         ("Plat Traditionnel", "Plat Traditionnel"),

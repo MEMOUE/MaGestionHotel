@@ -1,25 +1,40 @@
 from django.db import models
-
-# Create your models here.
+from django.conf import settings
 
 
 class Chambre(models.Model):
-    numero_chambre = models.IntegerField(default=0, )
+    proprietaire = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        related_name='chambres'
+    )
+    numero_chambre = models.IntegerField(default=0)
+
+    TYPE_SIMPLE = 'simple'
+    TYPE_DOUBLE = 'double'
     TYPE_CHOICES = [
-        ('simple', 'Simple'),
-        ('double', 'Double'),
-    ]
-    ETAT_CHOICES = [
-        ('libre', 'Libre'),
-        ('occupee', 'Occupée'),
+        (TYPE_SIMPLE, 'Simple'),
+        (TYPE_DOUBLE, 'Double'),
     ]
     type_chambre = models.CharField(max_length=10, null=True, choices=TYPE_CHOICES)
+
+    ETAT_LIBRE = 'libre'
+    ETAT_OCCUPEE = 'occupee'
+    ETAT_CHOICES = [
+        (ETAT_LIBRE, 'Libre'),
+        (ETAT_OCCUPEE, 'Occupée'),
+    ]
+    etat = models.CharField(max_length=10, null=False, choices=ETAT_CHOICES)
+
+    STATUT_SALE = 'sale'
+    STATUT_PROPRE = 'propre'
     STATUT_CHOICES = [
-        ('sale', 'Sale'),
-        ('propre', 'Propre'),
+        (STATUT_SALE, 'Sale'),
+        (STATUT_PROPRE, 'Propre'),
     ]
     statut = models.CharField(max_length=10, null=True, choices=STATUT_CHOICES)
-    etat = models.CharField(max_length=10, null=False, choices=ETAT_CHOICES)
+
     prix = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(auto_now=True)
 

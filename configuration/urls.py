@@ -1,7 +1,7 @@
 from django.urls import path
 
 from configuration.views import home_config, CreateConfig, DetailConfig, ListConfig, regle_prix, ListRegle, update_config, \
-    UpdateConfig, update_rule, delete_rule
+    UpdateConfig, update_rule, delete_rule,header
 
 app_name = "confighotel"
 urlpatterns = [
@@ -15,4 +15,5 @@ urlpatterns = [
     path("detail/<int:pk>", DetailConfig.as_view(), name="detail-config"),
     path("update-config/<int:pk>", UpdateConfig.as_view(), name="update-config"),
     path("update-config/", update_config, name="update-config"),
+    path("header/", header, name="header"),
 ]

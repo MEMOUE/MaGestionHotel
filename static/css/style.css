@@ -69,23 +69,30 @@ footer{
     background-color: var(--rouge);
 }
 
-/* la page planning */
 
- table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
-        }
-
- .reservation-confirmed {
-    background-color: green;
+/* Style pour tous les champs de formulaire */
+form input[type="text"],
+form input[type="email"],
+form input[type="password"],
+form textarea,
+form select {
+    /* Vos styles génériques pour tous les champs de formulaire */
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Pour inclure la bordure et le remplissage dans la largeur */
+    /* Autres styles que vous souhaitez appliquer */
 }
 
-.reservation-not-confirmed {
-    background-color: yellow;
+/* Style pour le bouton de soumission */
+form button[type="submit"] {
+    /* Vos styles pour le bouton */
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }

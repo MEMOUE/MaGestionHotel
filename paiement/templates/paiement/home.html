@@ -1,25 +1,96 @@
+<!-- templates/subscription_plans.html -->
+
 {% extends "base.html" %}
 
-{% block title %}paiement{% endblock %}
+{% block title %}Choisissez un abonnement{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="row offset-md-3 my-3">
-            <div class="col-md-6 w-25">
-                <h3 class="bg-orange"><a href="https://www.orange.sn/orange-money" class="text-decoration-none text-white" target="_blank">Orange Money</a></h3>
-                <p>
-                    <b>Telephone</b>
-                </p>
-            </div>
-            <div class="col-md-6 w-25">
-                <h3 class="bg-primary"><a href="https://www.wave.com/fr/" target="_blank" class="text-decoration-none text-white">Wave</a></h3>
-                <p>
-                    <b>Telephone</b>
-                </p>
-            </div>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Choisissez un abonnement</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+    .card {
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.1);
+      margin: 5%;
+
+    }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: bold;
+      color: #ff6f61; /* Orange */
+    }
+    .card-text {
+      color: #4CAF50; /* Green */
+    }
+    .card:hover {
+      transform: scale(1.25);
+    }
+    .btn-primary {
+      background-color: #4CAF50; /* Green */
+      border-color: #4CAF50; /* Green */
+    }
+    .btn-primary:hover {
+      background-color: #388e3c; /* Darker Green */
+      border-color: #388e3c; /* Darker Green */
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4 bg-success">Plans d'abonnement</h2>
+    <div class="card-deck">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Abonnement de 3 mois</h5>
+          <p class="card-text">Description des fonctionnalités incluses...</p>
+          <p>50 €</p>
+          <a href="/payment?duration=3" class="btn btn-primary btn-block">Souscrire</a>
         </div>
+      </div>
+      <!-- Répétez la structure ci-dessus pour d'autres plans -->
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Abonnement de 6 mois</h5>
+          <p class="card-text">Description des fonctionnalités incluses...</p>
+          <p>90 €</p>
+          <a href="/payment?duration=6" class="btn btn-primary btn-block">Souscrire</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Abonnement de 9 mois</h5>
+          <p class="card-text">Description des fonctionnalités incluses...</p>
+          <p>130 €</p>
+          <a href="/payment?duration=6" class="btn btn-primary btn-block">Souscrire</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Abonnement de 12 mois</h5>
+          <p class="card-text">Description des fonctionnalités incluses...</p>
+          <p>180 €</p>
+          <a href="/payment?duration=6" class="btn btn-primary btn-block">Souscrire</a>
+        </div>
+      </div>
+
     </div>
+  </div>
+</body>
+</html>
+
 {% endblock %}
+
 
 {% block footer %}
     {% include "footer.html" %}

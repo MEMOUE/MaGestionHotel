@@ -1,11 +1,11 @@
 from django import forms
-
-from reservation.models import Reservation
+from reservation.models import Reservation, Chambre
 
 
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
+        exclude = ['proprietaire']
         fields = "__all__"
         widgets = {
             'nom_client': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom du client'}),
@@ -15,8 +15,7 @@ class ReservationForm(forms.ModelForm):
             'date_reservation': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Date de reservation'}),
             'nombre_jours': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Nombre de jours'}),
             'chambre': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Chambre choisie'}),
-            'etat': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Etat choisie'}),
-            'statut': forms.Select(attrs={'class': 'form-control','placeholder': 'statut choisie' }),
+            'statut': forms.Select(attrs={'class': 'form-control', 'placeholder': 'statut choisie'}),
         }
         error_messages = {
             'date_reservation': {
@@ -31,11 +30,12 @@ class ReservationForm(forms.ModelForm):
                 'required': "Veuillez fournir le nombre de jours.",
                 'invalid': "Veuillez fournir un nombre valide pour les jours.",
             },
-            'etat': {
-                'required': "Veuillez l'etat de la reservation .",
-                'invalid': "Veuillez fournir un nombre valide pour les jours.",
-            },
             'statut': {
                 'required': 'Veuillez sélectionner un statut.',
             },
         }
+
+    def __init__(self, user, *args, **kwargs):
+        super(ReservationForm, self).__init__(*args, **kwargs)
+        # Limiter les choix du champ "chambre" aux chambres appartenant à l'utilisateur connecté
+        self.fields['chambre'].queryset = Chambre.objects.filter(proprietaire=user)

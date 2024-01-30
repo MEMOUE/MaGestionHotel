@@ -1,11 +1,10 @@
 from .models import Chambre
 from django import forms
 
-
 class ChambreForm(forms.ModelForm):
     class Meta:
         model = Chambre
-        fields = "__all__"
+        exclude = ['proprietaire']  # Exclure le champ proprietaire du formulaire
         labels = {
             'numero_chambre': 'Numéro de chambre',
             'type_chambre': 'Type de chambre',
@@ -21,7 +20,6 @@ class ChambreForm(forms.ModelForm):
             'prix': forms.NumberInput(attrs={'class': 'form-control', 'style': 'width: 300px'}),
             'date': forms.DateInput(attrs={'class': 'form-control', 'style': 'width: 300px'}),
             'etat': forms.Select(attrs={'class': 'form-control', 'style': 'width: 300px'}),
-
         }
         error_messages = {
             'numero_chambre': {

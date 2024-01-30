@@ -1,12 +1,9 @@
-from django.forms import formset_factory
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, UpdateView, DetailView, ListView
-
-from configuration.form import ConfigForm, ReglePrixForm
+from configuration.forms import ConfigForm, ReglePrixForm
 from configuration.models import Configuration, Categories
-
-
-# Create your views here.
 
 
 def home_config(request):
@@ -14,14 +11,9 @@ def home_config(request):
 
 
 def regle_prix(request):
-    #ReglePrixFormset = formset_factory(ReglePrixForm, extra=4)
-    #formset = ReglePrixFormset()
     form = ReglePrixForm()
     if request.method == "POST":
         form = ReglePrixForm(request.POST)
-        #formset = ReglePrixFormset(request.POST or None)
-        #formset = ReglePrixFormset(request.POST or None)
-        #for form in formset:
         if form.is_valid():
             form.save()
             return redirect("confighotel:home-config")
@@ -37,7 +29,6 @@ def update_rule(request, id):
             return redirect("confighotel:list-rule")
     else:
         form = ReglePrixForm(instance=obj)
-
     return render(request, "confighotel/update_rule.html", {"form": form})
 
 
@@ -49,40 +40,51 @@ def delete_rule(request, id):
     return render(request, "confighotel/delete_rule.html")
 
 
-class CreateConfig(CreateView):
+class CreateConfig(LoginRequiredMixin, CreateView):
     form_class = ConfigForm
     template_name = "confighotel/add.html"
-    queryset = Configuration.objects.all()
-
-    # success_url = "home-config"
+    success_url = reverse_lazy("confighotel:home-config")
 
     def form_valid(self, form):
+        form.instance.proprietaire = self.request.user
         return super().form_valid(form)
 
+    def get_queryset(self):
+        return Configuration.objects.filter(proprietaire=self.request.user)
 
-class ListConfig(ListView):
+
+class ListConfig(LoginRequiredMixin, ListView):
     template_name = "confighotel/list_config.html"
-    queryset = Configuration.objects.all()
+
+    def get_queryset(self):
+        return Configuration.objects.filter(proprietaire=self.request.user)
 
 
-class ListRegle(ListView):
+class ListRegle(LoginRequiredMixin, ListView):
     template_name = "confighotel/list_regle.html"
-    queryset = Categories.objects.all()
+
+    def get_queryset(self):
+        # Filtrer les catégories par l'utilisateur connecté
+        return Categories.objects.filter(proprietaire=self.request.user)
 
 
-class DetailConfig(DetailView):
+class DetailConfig(LoginRequiredMixin, DetailView):
     template_name = "confighotel/detail_config.html"
-    queryset = Configuration.objects.all()
 
-    def get_object(self):
-        id_ = self.kwargs.get("pk")
-        return get_object_or_404(Configuration, pk=id_)
+    def get_queryset(self):
+        return Configuration.objects.filter(proprietaire=self.request.user)
 
 
-class UpdateConfig(UpdateView):
+class UpdateConfig(LoginRequiredMixin, UpdateView):
     form_class = ConfigForm
     template_name = "confighotel/add.html"
-    queryset = Configuration.objects.all()
+
+    def get_queryset(self):
+        return Configuration.objects.filter(proprietaire=self.request.user)
+
+    def form_valid(self, form):
+        form.instance.proprietaire = self.request.user
+        return super().form_valid(form)
 
 
 def update_config(request):
@@ -95,4 +97,7 @@ def update_config(request):
     return render(request, "confighotel/add.html", {"form": form})
 
 
-
+def header(request):
+    conf = Configuration.objects.filter(proprietaire=request.user).first()  # Utilisez .first() pour obtenir un seul objet
+    context = {'config': conf}  # Utilisez la clé 'configuration' au lieu de 'conf'
+    return render(request, 'header.html', context)  # Passez le dictionnaire contexte

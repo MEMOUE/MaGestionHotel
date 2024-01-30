@@ -1,10 +1,13 @@
 from django.db import models
 from django.urls import reverse
 
+from HotelPlus import settings
+
 
 # Create your models here.
 
 class Configuration(models.Model):
+    proprietaire = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     nom = models.CharField(max_length=100)
     telephone = models.CharField(max_length=100, blank=True)
     adresse = models.CharField(max_length=200, blank=True)
@@ -19,6 +22,7 @@ class Configuration(models.Model):
 
 
 class Categories(models.Model):
+    proprietaire = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     CLASSES_CHAMBRES = (
         ("Classe A", "classe A"),
         ("Classe B", "classe B"),

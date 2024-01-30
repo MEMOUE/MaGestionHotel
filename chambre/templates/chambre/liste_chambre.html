@@ -17,6 +17,7 @@
                     <th>Prix</th>
                     <th>Date</th>
                     <th>Etat</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,10 +31,13 @@
                         <td {% if chambre.etat == 'libre' %}class="text-green"{% else %}class="text-red"{% endif %}>
                             {{ chambre.get_etat_display }}
                         </td>
-                        
-                        
+                         <td>
+                            <a href="{% url 'modifier_chambre' chambre.id %}" class="btn btn-primary">Modifier</a>
+                            <a href="{% url 'supprimer_chambre' chambre.id %}" class="btn btn-danger">Supprimer</a>
+                        </td>
+
                     </tr>
-                    
+
                 {% empty %}
                     <tr>
                         <td colspan="4">Aucune chambre disponible.</td>
@@ -41,6 +45,6 @@
                 {% endfor %}
             </tbody>
         </table>
-        
+
     </div>
 {% endblock %}

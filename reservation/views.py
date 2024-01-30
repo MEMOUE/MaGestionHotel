@@ -1,6 +1,7 @@
 import io
 from datetime import datetime
-from django.http import FileResponse
+from django.contrib.auth.decorators import login_required
+from django.http import FileResponse, HttpResponseForbidden
 from django.shortcuts import render, get_object_or_404, redirect
 from reportlab.pdfgen import canvas
 from reservation.forms import ReservationForm
@@ -12,35 +13,46 @@ from chambre.models import Chambre
 # Create your views here.
 
 
+@login_required
 def reservation_view(request):
     if request.method == 'POST':
-        form = ReservationForm(request.POST)
+        form = ReservationForm(request.user, request.POST)  # Passer request.user comme argument
         if form.is_valid():
-            form.save()
-            return redirect('liste_reservation')
+            reservation = form.save(commit=False)
+            reservation.proprietaire = request.user
+            reservation.save()
+            return redirect('planning')
     else:
-        form = ReservationForm()
+        form = ReservationForm(user=request.user)  # Passer request.user comme argument
+
     return render(request, 'reservation/reservation.html', {'form': form})
 
 
+@login_required
 def liste_reservation(request):
-    reservations = Reservation.objects.all()
+    reservations = Reservation.objects.filter(proprietaire=request.user)
     context = {'reservations': reservations}
     return render(request, 'reservation/liste_reservation.html', context)
 
 
+@login_required
 def modifier_reservation(request, reservation_id):
+    # Récupérer la réservation à modifier
     reservation = get_object_or_404(Reservation, id=reservation_id)
 
+    # Assurez-vous que seul le propriétaire peut modifier la réservation
+    if request.user != reservation.proprietaire:
+        return HttpResponseForbidden("Vous n'avez pas la permission de modifier cette réservation.")
+
     if request.method == 'POST':
-        form = ReservationForm(request.POST, instance=reservation)
+        form = ReservationForm(request.user, request.POST, instance=reservation)
         if form.is_valid():
             form.save()
-            return redirect('liste_reservation')
+            return redirect('planning')
     else:
-        form = ReservationForm(instance=reservation)
+        form = ReservationForm(user=request.user, instance=reservation)
 
-    return render(request, 'reservation/modifier_reservation.html', {'form': form})
+    return render(request, 'reservation/modifier_reservation.html', {'form': form, 'reservation': reservation})
 
 
 def supprimer_reservation(request, reservation_id):
@@ -48,7 +60,7 @@ def supprimer_reservation(request, reservation_id):
 
     if request.method == 'POST':
         reservation.delete()
-        return redirect('liste_reservation')
+        return redirect('planning')
 
     return render(request, 'reservation/supprimer_reservation.html', {'reservation': reservation})
 
@@ -59,7 +71,7 @@ def genere_facture(request, id):
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=(300, 400))
 
-    logo = "C:/Users/mamad/Documents/L3_GLSI/logotype.png"
+    #logo = "C:/Users/mamad/Documents/L3_GLSI/logotype.png"
 
     c.drawString(10, 380, "Nom : {}".format(obj.nom_client))
     c.drawString(10, 340, "Prenom : {}".format(obj.prenom_client))
@@ -68,7 +80,7 @@ def genere_facture(request, id):
     c.drawString(90, 260, "FCFA")
     c.drawString(10, 220, "Date réservation : {}".format(obj.date_reservation))
     c.drawString(10, 180, "Date arrivée : {}".format(obj.date_arrivee))
-    c.drawImage(logo, 100, 50, width=100, height=100)
+    #c.drawImage(logo, 100, 50, width=100, height=100)
     c.drawString(75, 10, f"Fait le : "
                          f"{temps.day}-{temps.month}-{temps.year} à {temps.hour}h:{temps.minute}min:{temps.second}s"
                  )
@@ -81,31 +93,32 @@ def genere_facture(request, id):
 
 
 def copier_reservation_dans_historique(request, reservation_id):
-    try:
-        reservation = Reservation.objects.get(id=reservation_id)
+    # Récupérer la réservation à copier
+    reservation = get_object_or_404(Reservation, pk=reservation_id)
 
-        historique_reservation = HistoriqueReservation(
+    # Copier les détails de la réservation dans HistoriqueReservation
+    HistoriqueReservation.objects.create(
+        proprietaire = reservation.proprietaire,
+        nom_client=reservation.nom_client,
+        prenom_client=reservation.prenom_client,
+        adresse_client=reservation.adresse_client,
+        date_reservation=reservation.date_reservation,
+        date_arrivee=reservation.date_arrivee,
+        nombre_jours=reservation.nombre_jours,
+        chambre=reservation.chambre,
+        statut=reservation.statut
 
-            nom_client=reservation.nom_client,
-            prenom_client=reservation.prenom_client,
-            adresse_client=reservation.adresse_client,
-            date_reservation=reservation.date_reservation,
-            date_arrivee=reservation.date_arrivee,
-            nombre_jours=reservation.nombre_jours,
-            chambre=reservation.chambre
+        # Copiez d'autres champs si nécessaire
+    )
 
-        )
+    # Supprimer la réservation
+    reservation.delete()
 
-        historique_reservation.save()
-        reservation.delete()
-
-        return render(request, 'reservation/liste_reservation.html')  # Rediriger vers la liste des réservations
-    except Reservation.DoesNotExist:
-        return redirect('reservation/liste_reservation.html')  # Gérer le cas où la réservation n'existe pas
+    return redirect('planning')
 
 
 def liste_historique_reservations(request):
-    historique_reservations = HistoriqueReservation.objects.all()
+    historique_reservations = HistoriqueReservation.objects.filter(proprietaire=request.user)
 
     context = {
         'historique_reservations': historique_reservations
@@ -115,10 +128,13 @@ def liste_historique_reservations(request):
 
 
 # Gestion de planning
+from django.shortcuts import render
+from .models import Reservation, HistoriqueReservation, Chambre
+
 def planning(request):
-    chambres = Chambre.objects.all()
-    reservations = Reservation.objects.all()
-    historiques = HistoriqueReservation.objects.all()
+    chambres = Chambre.objects.filter(proprietaire=request.user)
+    reservations = Reservation.objects.filter(proprietaire=request.user)
+    historiques = HistoriqueReservation.objects.filter(proprietaire=request.user)
 
     dates_reservations = set(reservation.date_reservation for reservation in reservations)
     dates_historiques = set(historique.date_reservation for historique in historiques)
@@ -130,18 +146,23 @@ def planning(request):
             'numero_chambre': chambre.numero_chambre,
             'prix': chambre.prix,
             'reservations': [],
-            'historiques': [],
         }
         for date in dates_uniques:
             reservation = reservations.filter(chambre=chambre, date_reservation=date).first()
-            historique = historiques.filter(chambre=chambre, date_reservation=date).first()
 
             if reservation:
                 chambre_data['reservations'].append({
                     'date': date,
+                    'id': reservation.id,
                     'nom_client': reservation.nom_client,
                     'prenom_client': reservation.prenom_client,
                     'statut': reservation.statut,
+                    'adresse_client': reservation.adresse_client,
+                    'date_arrivee': reservation.date_arrivee,
+                    'nombre_jours': reservation.nombre_jours,
+                    'chambre': reservation.chambre,
+
+                    # Ajoutez d'autres champs au besoin
                 })
             else:
                 chambre_data['reservations'].append({
@@ -149,29 +170,10 @@ def planning(request):
                     'nom_client': '',
                     'prenom_client': '',
                     'statut': 'vide',
-                })
-
-            if historique:
-                chambre_data['historiques'].append({
-                    'date': date,
-                    'nom_client': historique.nom_client,
-                    'prenom_client': historique.prenom_client,
-                    'statut': 'historique',
-                })
-            else:
-                chambre_data['historiques'].append({
-                    'date': date,
-                    'nom_client': '',
-                    'prenom_client': '',
-                    'statut': 'vide',
+                    'adresse_client': '',
                 })
 
         planning_data.append(chambre_data)
 
-    context = {'planning_data': planning_data, 'dates_uniques': dates_uniques}
+    context = {'planning_data': planning_data, 'dates_uniques': dates_uniques,}
     return render(request, 'reservation/planning.html', context)
-
-
-
-#Representaion statistique des données
-
