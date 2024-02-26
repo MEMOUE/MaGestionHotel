@@ -11,7 +11,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar bg-light">
+        <nav class="navbar bg-muted">
           <div class="container-fluid">
               {% if user.is_authenticated %}
                 <a class="navbar-brand" href="{% url 'home-users' %}">
@@ -23,7 +23,7 @@
                     <a class="nav-link orange" href="{% url 'home-users' %}">Bienvenue : {{ user.username }}</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link orange" href="{% url 'deconnexion' %}">Deconnexion</a>
+                    <a class="nav-link orange " href="{% url 'deconnexion' %}">Deconnexion</a>
                   </li>
                 </ul>
               {% else %}

@@ -136,3 +136,11 @@ AUTH_USER_MODEL = "users.Users"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Gestion des messagerie pour la reinitialisation de mot de passe
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'  # Par exemple, smtp.gmail.com pour Gmail
+EMAIL_PORT = 587  # Port SMTP de votre fournisseur de messagerie
+EMAIL_USE_TLS = True  # Ou False si votre fournisseur de messagerie ne prend pas en charge TLS
+EMAIL_HOST_USER = 'memouekone@esp.sn'  # Votre adresse e-mail
+EMAIL_HOST_PASSWORD = 'ESP45919'  # Votre mot de passe e-mail

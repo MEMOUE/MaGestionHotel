@@ -1,39 +1,54 @@
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect
 from .forms import InscriptionForm, ConnexionForm
-
-# Create your views here.
-
+from django.contrib import messages
+from django.shortcuts import render, redirect
+from .forms import InscriptionForm
 
 def inscription(request):
     form = InscriptionForm()
+
     if request.method == "POST":
         form = InscriptionForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Votre compte a été créé avec succès. Veuillez-vous connecter maintenant")
             return redirect("connexion")
         else:
-            form = InscriptionForm()
-    return render(request, "users/inscription.html", context={"form":form})
+            # Afficher des messages d'erreur pour chaque champ
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Erreur dans le champ {field}: {error}")
+
+    return render(request, "users/inscription.html", context={"form": form})
 
 
 def connexion(request):
     form = ConnexionForm()
-    message = ""
+
     if request.method == "POST":
         form = ConnexionForm(request, data=request.POST)
         if form.is_valid():
-            user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password"])
-            if user is not None and user.is_active and user.is_staff:
-                login(request, user)
-                return redirect("admin:index")
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                if user.is_active:
+                    if user.is_staff:
+                        login(request, user)
+                        return redirect("admin:index")
+                    else:
+                        login(request, user)
+                        return redirect("home-users")
+                else:
+                    messages.error(request, "Votre compte est désactivé.")
             else:
-                login(request, user)
-                return redirect("home-users")
-        else:
-            message = "Erreur d'identification"
-    return render(request, "users/connexion.html", context={"form":form, "message":message})
+                messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
+            messages.error(request, "Nom d'utilisateur ou mot de passe incorrect.")
+    return render(request, "users/connexion.html", context={"form": form})
+
 
 
 @login_required

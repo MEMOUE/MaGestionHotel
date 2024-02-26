@@ -1,27 +1,60 @@
 {% extends "base.html" %}
 
-{% block title %}connexion{% endblock %}
+{% block title %}Inscription {% endblock %}
 
 {% block content %}
-    <section class="login">
-        <h1 class="text-center orange">Page de connexion</h1>
-        <div class="error">
-            {{ message }}
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="form-group m-3">
-                    <div class="offset-md-4">
+
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
+            <div class="alert alert-danger text-center">
+                {{ message }}
+            </div>
+        {% elif message.tags == 'success' %}
+            <div class="alert alert-success text-center">
+                {{ message }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+<section class="subscription">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h6 class="text-center">Inscription - Avez-vous déjà un compte? <a href="{% url 'connexion' %}">Connexion</a></h6>
+</h4>
+                    </div>
+                    <div class="card-body">
                         <form method="post">
                             {% csrf_token %}
-                            {{ form.as_p }}
-                            <button type="submit">S'inscrire</button>
+                            <div class="form-group">
+                                {{ form.username.label_tag }}
+                                {{ form.username }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.email.label_tag }}
+                                {{ form.email }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.password1.label_tag }}
+                                {{ form.password1 }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.password2.label_tag }}
+                                {{ form.password2 }}
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-rounded">Inscrire</button>
                         </form>
+
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 {% endblock %}
 
 {% block footer %}

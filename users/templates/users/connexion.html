@@ -1,32 +1,43 @@
 {% extends "base.html" %}
 
-{% block title %}connexion{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block content %}
-    <section class="login">
-        <h1 class="text-center orange">Page de connexion</h1>
-        <div class="error">
-            {{ message }}
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="form-group m-3">
-                    <div class="offset-md-4">
-                        <form action="" method="post" class="form-control w-50">
-                            {% csrf_token %}
-                            {% for field in form %}
-                                <div class="m-2">
-                                    {{ field.label_tag }}
-                                    {{ field }}
-                                </div>
-                            {% endfor %}
-                            <input class="btn-form col-md-6" type="submit" value="se connecter">
-                        </form>
-                    </div>
+
+{% if messages %}
+    <div class="alert alert-danger text-center">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+                {{ message }}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endif %}
+
+<section class="login">
+    <h6 class="text-center"><span class="text-primary"> Connexion</span>  Vous n'avez pas de compte ? <a href="{% url 'inscription' %}">Inscrivez-vous ici</a></h6>
+    <div class="container">
+        <div class="row">
+            <div class="form-group m-3">
+                <div class="offset-md-4">
+                    <form action="" method="post" class="form-control w-50">
+                        {% csrf_token %}
+                        {% for field in form %}
+                            <div class="m-2">
+                                {{ field.label_tag }}
+                                {{ field }}
+                            </div>
+                        {% endfor %}
+                        <input class="btn-form col-md-6" type="submit" value="Se connecter">
+                    </form>
+
                 </div>
             </div>
+            <a href="{% url 'password_reset' %}" class="text-center">Mot de passe oublié</a>
         </div>
-    </section>
+    </div>
+</section>
+
 {% endblock %}
 
 {% block footer %}
