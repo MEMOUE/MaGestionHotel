@@ -89,20 +89,20 @@ WSGI_APPLICATION = 'HotelPlus.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'databasehotel',
-#        'USER': 'memko',
-#        'PASSWORD': 'Memko2024',
-#        'HOST': 'databasehotel.cdv25xcpumjt.eu-north-1.rds.amazonaws.com',
-#        'PORT': '5432',
-#    }
-#}
-
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dfgdln8mtio5cs',
+        'USER': 'u96s2lg8lborgb',
+        'PASSWORD': 'pf8d4e9c394b0e968c8f449e8df57b6a79da53386cdcefc9708f36d1adf6009d3',
+        'HOST': 'c7gljno857ucsl.cluster-czrs8kj4isg7.us-east-1.rds.amazonaws.com',
+        'PORT': '5432',
+    }
 }
+
+#DATABASES = {
+#    'default': dj_database_url.config()
+#}
 
 
 # Password validation
