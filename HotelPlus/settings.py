@@ -28,7 +28,8 @@ SECRET_KEY = 'django-insecure-d-n@01*)o_d6lxnijb^dikb5$9!1z+ab101=t9^x^%-n$gl+k%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+# url de heroku genere: magestionhotel-c5b9754e0827.herokuapp.com/
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -140,13 +141,14 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
+django_heroku.settings(locals())
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = "users.Users"
-django_heroku.settings(locals())
+
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
