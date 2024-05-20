@@ -3,12 +3,56 @@
 {% block title %}home-chambre{% endblock %}
 
 {% block content %}
-    <div class="row">
-        <button class="col-sm-6 m-3 w-25"><a class="text-decoration-none" href="{% url 'confighotel:create-config' %}">Configuration</a></button>
-        <button class="col-sm-6 m-3 w-25"><a class="text-decoration-none" href="{% url 'confighotel:create-rule' %}">Règle de prix</a></button>
-        <button class="col-sm-6 m-3 w-25"><a class="text-decoration-none" href="{% url 'confighotel:list-config' %}">Voir configuration</a></button>
-        <button class="col-sm-6 m-3 w-25"><a class="text-decoration-none" href="{% url 'confighotel:list-rule' %}">Voir règle de prix</a></button>
+<style>
+    /* Style global pour le layout */
+    body {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+    #menu {
+        width: 16.67%;
+        background-color: #343a40;
+        overflow-y: auto;
+        padding: 20px;
+    }
+    #content {
+        width: 83.33%;
+        padding: 20px;
+        overflow-y: auto;
+    }
+    .btn-custom {
+        width: auto;
+        height: 38px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    .orange {
+        color: orange;
+    }
+    .form-inline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .form-group {
+        margin-right: 10px;
+    }
+</style>
+
+<div style="display: flex; width: 100%; height: 100%;">
+    <div id="menu">
+        {% include 'menu.html' %}
     </div>
+    <div id="content">
+        <div class="row">
+            <button class="col-sm-6 m-3 w-25 btn btn-primary"><a class="text-decoration-none text-white" href="{% url 'confighotel:create-config' %}">Configuration</a></button>
+            <button class="col-sm-6 m-3 w-25 btn btn-primary"><a class="text-decoration-none text-white" href="{% url 'confighotel:create-rule' %}">Règle de prix</a></button>
+            <button class="col-sm-6 m-3 w-25 btn btn-primary"><a class="text-decoration-none text-white" href="{% url 'confighotel:list-config' %}">Voir configuration</a></button>
+            <button class="col-sm-6 m-3 w-25 btn btn-primary"><a class="text-decoration-none text-white" href="{% url 'confighotel:list-rule' %}">Voir règle de prix</a></button>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block footer %}

@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ChambreForm
 from .models import Chambre
+from .models import TypeChambre
+from .forms import TypeChambreForm
 
 def chambre_view(request):
     if request.method == 'POST':
@@ -40,3 +42,36 @@ def supprimer_chambre(request, chambre_id):
         return redirect('liste_chambres')
 
     return render(request, 'chambre/supprimer_chambre.html', {'chambre': chambre})
+
+
+def typechambre_list(request):
+    types = TypeChambre.objects.all()
+    return render(request, 'chambre/typechambre_list.html', {'types': types})
+
+def typechambre_new(request):
+    if request.method == "POST":
+        form = TypeChambreForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('typechambre_list')
+    else:
+        form = TypeChambreForm()
+    return render(request, 'chambre/typechambre_new.html', {'form': form})
+
+def typechambre_edit(request, pk):
+    typechambre = get_object_or_404(TypeChambre, pk=pk)
+    if request.method == "POST":
+        form = TypeChambreForm(request.POST, instance=typechambre)
+        if form.is_valid():
+            form.save()
+            return redirect('typechambre_list')
+    else:
+        form = TypeChambreForm(instance=typechambre)
+    return render(request, 'chambre/typechambre_edit.html', {'form': form})
+
+def typechambre_delete(request, pk):
+    typechambre = get_object_or_404(TypeChambre, pk=pk)
+    if request.method == "POST":
+        typechambre.delete()
+        return redirect('typechambre_list')
+    return render(request, 'chambre/typechambre_delete.html', {'typechambre': typechambre})

@@ -53,7 +53,11 @@ def connexion(request):
 
 @login_required
 def home(request):
-    return render(request, "users/home.html")
+    return render(request, "users/accueil.html")
+
+
+def menusysteme(request):
+    return render(request, "users/menusysteme.html")
 
 
 @login_required

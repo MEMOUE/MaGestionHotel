@@ -1,7 +1,8 @@
 from django.urls import path
 
 from configuration.views import home_config, CreateConfig, DetailConfig, ListConfig, regle_prix, ListRegle, update_config, \
-    UpdateConfig, update_rule, delete_rule,header
+    UpdateConfig, update_rule, delete_rule,header,pricing_rule_list
+from . import views
 
 app_name = "confighotel"
 urlpatterns = [
@@ -16,4 +17,11 @@ urlpatterns = [
     path("update-config/<int:pk>", UpdateConfig.as_view(), name="update-config"),
     path("update-config/", update_config, name="update-config"),
     path("header/", header, name="header"),
+
+
+
+    path('rules/', pricing_rule_list, name='pricing_rule_list'),
+    path('rules/new/', views.pricing_rule_create, name='pricing_rule_create'),
+    path('rules/<int:pk>/edit/', views.pricing_rule_update, name='pricing_rule_update'),
+    path('rules/<int:pk>/delete/', views.pricing_rule_delete, name='pricing_rule_delete'),
 ]

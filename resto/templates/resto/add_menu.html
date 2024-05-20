@@ -3,26 +3,68 @@
 {% block title %}Ajouter un menu{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1 style="color: orange;">Ajouter un menu</h1>
-        <form action="" method="post" enctype="multipart/form-data" class="form">
-            {% csrf_token %}
+<style>
+    /* Style global pour le layout */
+    body {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+    #menu {
+        width: 16.67%;
+        background-color: #343a40;
+        overflow-y: auto;
+        padding: 20px;
+    }
+    #content {
+        width: 83.33%;
+        padding: 20px;
+        overflow-y: auto;
+    }
+    .btn-custom {
+        width: auto;
+        height: 38px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    .orange {
+        color: orange;
+    }
+    .form-inline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .form-group {
+        margin-right: 10px;
+    }
+</style>
 
-            {% for field in form %}
-                <div class="mb-3">
-                    <label  class="form-label" style="color: orange;">{{ field.label }}</label>
-                    {{ field }}
-                    {% if field.errors %}
-                        <div class="text-danger">
-                            {% for error in field.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-
-            <a type="submit" class="btn btn-success">Ajouter</a>
-        </form>
+<div style="display: flex; width: 100%; height: 100%;">
+    <div id="menu">
+        {% include 'menu.html' %}
     </div>
+    <div id="content">
+        <div class="container">
+            <h1 style="color: orange;">Ajouter un menu</h1>
+            <form action="" method="post" enctype="multipart/form-data" class="form">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label" style="color: orange;">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <div class="text-danger">
+                                {% for error in field.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-success">Ajouter</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

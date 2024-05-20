@@ -27,3 +27,21 @@ class ReglePrixForm(forms.ModelForm):
             "prix_enfant": forms.NumberInput(attrs={"class": "form-control m-2"}),
             "prix_adulte": forms.NumberInput(attrs={"class": "form-control m-2"})
         }
+
+from .models import PricingRule
+
+class PricingRuleForm(forms.ModelForm):
+    class Meta:
+        model = PricingRule
+        fields = [
+            'prix', 'date_heure_arrivee', 'date_heure_depart',
+            'tarif_supplementaire_adulte', 'tarif_supplementaire_enfant', 'frais_supplementaire'
+        ]
+        widgets = {
+            'prix': forms.NumberInput(attrs={'class': 'form-control'}),
+            'date_heure_arrivee': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
+            'date_heure_depart': forms.DateTimeInput(attrs={'class': 'form-control', 'type': 'datetime-local'}),
+            'tarif_supplementaire_adulte': forms.NumberInput(attrs={'class': 'form-control'}),
+            'tarif_supplementaire_enfant': forms.NumberInput(attrs={'class': 'form-control'}),
+            'frais_supplementaire': forms.NumberInput(attrs={'class': 'form-control'}),
+        }

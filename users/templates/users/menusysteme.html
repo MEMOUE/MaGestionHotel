@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<style>
+    /* Votre CSS existant */
+    body {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+        margin: 0;
+    }
+    #menu {
+        width: 16.67%;
+        background-color: #343a40;
+        overflow-y: auto;
+        padding: 20px;
+    }
+    #content {
+        width: 83.33%;
+        padding: 20px;
+        overflow-y: auto;
+    }
+    .btn-custom {
+        width: auto;
+        height: 38px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    .table th:nth-child(1),
+    .table td:nth-child(1),
+    .table th:nth-child(2),
+    .table td:nth-child(2) {
+        width: 150px;
+    }
+    .reservation-details {
+        cursor: pointer;
+    }
+    .orange {
+        color: orange;
+    }
+    .form-inline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .form-group {
+        margin-right: 10px;
+    }
+    .a-menu{
+        
+    }
+</style>
+
+<div style="display: flex; width: 100%; height: 100%;">
+    <div id="menu">
+        {% include 'menu.html' %}
+    </div>
+    <div id="content">
+        <div class="container">
+            <div class="row">
+                <div class="offset-md-1">
+
+                    <button class="col-4 m-3 w-25 border-0 shadow-lg mb-5 rounded">
+                        <a class="a-menu text-decoration-none fs-5 fw-semibold" href="{% url 'confighotel:pricing_rule_list' %}">
+                            <img src="{% static 'images/booking.png' %}" alt="Icône Réservation" style="width: 50px; height: 50px;">
+                            <br>Regle des prix
+                        </a>
+                    </button>
+                    <button class="col-4 m-3 w-25 border-0 shadow-lg mb-5 rounded">
+                        <a class="a-menu text-decoration-none fs-5 fw-semibold" href="{% url 'liste_chambre' %}">
+                            <img src="{% static 'images/chambre.png' %}" alt="Icône Chambres" style="width: 50px; height: 50px;">
+                            <br>Chambres
+                        </a>
+                    </button>
+                    <button class="col-4 m-3 w-25 border-0 shadow-lg mb-5 rounded">
+                        <a class="a-menu text-decoration-none fs-5 fw-semibold" href="{% url 'typechambre_list' %}">
+                            <img src="{% static 'images/dormant.png' %}" alt="Icône Déconnexion" style="width: 50px; height: 50px;">
+                            <br>Types de Chambres
+                        </a>
+                    </button>
+                    <button class="col-4 m-3 w-25 border-0 shadow-lg mb-5 rounded">
+                        <a class="a-menu text-decoration-none fs-5 fw-semibold" href="{% url 'liste_reservation' %}">
+                            <img src="{% static 'images/kyc.png' %}" alt="Icône Statistiques" style="width: 50px; height: 50px;">
+                            <br>Clients
+                        </a>
+                    </button>
+                    
+                    <button class="col-4 m-3 w-25 border-0 shadow-lg mb-5 rounded">
+                        <a class="a-menu text-decoration-none fs-5 fw-semibold" href="{% url 'historique_reservations' %}">
+                            <img src="{% static 'images/historique.png' %}" alt="Icône Historique" style="width: 50px; height: 50px;">
+                            <br>Historique
+                        </a>
+                    </button>
+                    <button class="col-4 m-3 w-25 border-0 shadow-lg mb-5 rounded">
+                        <a class="a-menu text-decoration-none fs-5 fw-semibold" href="{% url 'home-resto' %}">
+                            <img src="{% static 'images/resto.png' %}" alt="Icône Restaurant" style="width: 50px; height: 50px;">
+                            <br>Restaurant
+                        </a>
+                    </button>
+                    <button class="col-4 m-3 w-25 border-0 shadow-lg mb-5 rounded">
+                        <a class="a-menu text-decoration-none fs-5 fw-semibold" href="{% url 'planning' %}">
+                            <img src="{% static 'images/heritage.png' %}" alt="Icône Planning" style="width: 50px; height: 50px;">
+                            <br>Comptes secondaires
+                        </a>
+                    </button>
+                    
+                    <button class="col-4 m-3 w-25 border-0 shadow-lg mb-5 rounded">
+                        <a class="a-menu text-decoration-none fs-5 fw-semibold" href="{% url 'confighotel:home-config' %}">
+                            <img src="{% static 'images/parametres.png' %}" alt="Icône Paramètres" style="width: 50px; height: 50px;">
+                            <br>Autres Paramètres
+                        </a>
+                    </button>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block footer %}
+    {% include "footer.html" %}
+{% endblock %}

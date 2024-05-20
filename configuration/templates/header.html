@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
 </head>
 <body>   
-    <header>
+   <!-- <header>
         <nav class="navbar bg-light">
           <div class="container-fluid">
               {% if user.is_authenticated %}
@@ -42,7 +42,7 @@
               {% endif %}
           </div>
         </nav>
-    </header>
+    </header> -->
     <main>
         <div class="content">
             {% block content %}
@@ -50,7 +50,7 @@
             {% endblock %}
         </div>
     </main>
-    {% block footer %}{% endblock %}
+   
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="https://kit.fontawesome.com/0d3e5f82ca.js" crossorigin="anonymous"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>

@@ -3,34 +3,83 @@
 {% block title %}home-resto{% endblock %}
 
 {% block content %}
-    <a class="col-md-6" href="{% url 'add-menu' %}"><input type="submit" value="Ajouter un menu"></a>
-    <h2 class="text-center orange">MENU</h2>
-    <div>
+<style>
+    /* Style global pour le layout */
+    body {
+        display: flex;
+        height: 100vh;
+        overflow: hidden;
+    }
+    #menu {
+        width: 16.67%;
+        background-color: #343a40;
+        overflow-y: auto;
+        padding: 20px;
+    }
+    #content {
+        width: 83.33%;
+        padding: 20px;
+        overflow-y: auto;
+    }
+    .btn-custom {
+        width: auto;
+        height: 38px;
+        margin-bottom: 20px;
+        font-size: 14px;
+    }
+    .orange {
+        color: orange;
+    }
+    .form-inline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .form-group {
+        margin-right: 10px;
+    }
+    .card {
+        margin-bottom: 20px;
+    }
+    .card img {
+        height: 200px;
+        object-fit: cover;
+    }
+</style>
+
+<div style="display: flex; width: 100%; height: 100%;">
+    <div id="menu">
+        {% include 'menu.html' %}
+    </div>
+    <div id="content">
+        <a class="col-md-6 btn btn-primary mb-3" href="{% url 'add-menu' %}">Ajouter un menu</a>
+        <h2 class="text-center orange">MENU</h2>
         <div class="row row-cols-1 row-cols-md-3 g-4">
             {% for object in object_list %}
                 <div class="col mb-2 mx-2">
                     <div class="card h-100">
-                        <img src="{{ object.image.url }}" class="card-img-top" alt="...">
-                      <div class="card-body">
-                        <h5 class="card-title"><b>Nom du plat : </b>{{ object.nom_menu }}</h5>
-                        <p class="card-text">
-                            <b>Type : </b>{{ object.type }}<br>
-                            <b>Quantite : </b>{{ object.quantite }}<br>
-                            <b>Prix : </b>{{ object.prix }}
-                        </p>
-                        <p>
-                          <a href="{% url 'update-menu' object.id %}">Modifier</a>
-                          <a href="{% url 'delete-menu' object.id %}">Supprimer</a>
-                        </p>
-                      </div>
-                      <div class="card-footer">
-                        <small class="text-body-secondary">{{ object.date }}</small>
-                      </div>
+                        <img src="{{ object.image.url }}" class="card-img-top" alt="Image du plat">
+                        <div class="card-body">
+                            <h5 class="card-title"><b>Nom du plat : </b>{{ object.nom_menu }}</h5>
+                            <p class="card-text">
+                                <b>Type : </b>{{ object.type }}<br>
+                                <b>Quantité : </b>{{ object.quantite }}<br>
+                                <b>Prix : </b>{{ object.prix }}
+                            </p>
+                            <p>
+                                <a class="btn btn-warning btn-sm" href="{% url 'update-menu' object.id %}">Modifier</a>
+                                <a class="btn btn-danger btn-sm" href="{% url 'delete-menu' object.id %}">Supprimer</a>
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-body-secondary">{{ object.date }}</small>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
+</div>
 {% endblock %}
 
 {% block footer %}

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supprimer Type de Chambre</title>
+</head>
+<body>
+    <h1>Supprimer Type de Chambre</h1>
+    <p>Êtes-vous sûr de vouloir supprimer "{{ typechambre.typechambre }}" ?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Oui, supprimer</button>
+    </form>
+    <a href="{% url 'typechambre_list' %}">Annuler</a>
+</body>
+</html>

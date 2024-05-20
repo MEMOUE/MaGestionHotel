@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Supprimer Règle de Prix{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="text-center orange">Supprimer la Règle de Prix</h2>
+        <p>Êtes-vous sûr de vouloir supprimer cette règle de prix?</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+        </form>
+    </div>
+{% endblock %}

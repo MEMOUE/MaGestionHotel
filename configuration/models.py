@@ -39,3 +39,15 @@ class Categories(models.Model):
 
     def __str__(self):
         return self.categorie
+    
+
+class PricingRule(models.Model):
+    prix = models.DecimalField(max_digits=10, decimal_places=2)
+    date_heure_arrivee = models.DateTimeField()
+    date_heure_depart = models.DateTimeField()
+    tarif_supplementaire_adulte = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    tarif_supplementaire_enfant = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    frais_supplementaire = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    def __str__(self):
+        return f"Règle de prix {self.pk}"

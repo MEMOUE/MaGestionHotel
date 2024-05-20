@@ -101,3 +101,40 @@ def header(request):
     conf = Configuration.objects.filter(proprietaire=request.user).first()  # Utilisez .first() pour obtenir un seul objet
     context = {'config': conf}  # Utilisez la clé 'configuration' au lieu de 'conf'
     return render(request, 'header.html', context)  # Passez le dictionnaire contexte
+
+
+
+from .models import PricingRule
+from .forms import PricingRuleForm
+
+def pricing_rule_list(request):
+    rules = PricingRule.objects.all()
+    return render(request, 'pricing_rule_list.html', {'rules': rules})
+
+def pricing_rule_create(request):
+    if request.method == 'POST':
+        form = PricingRuleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('pricing_rule_list')
+    else:
+        form = PricingRuleForm()
+    return render(request, 'pricing_rule_form.html', {'form': form})
+
+def pricing_rule_update(request, pk):
+    rule = get_object_or_404(PricingRule, pk=pk)
+    if request.method == 'POST':
+        form = PricingRuleForm(request.POST, instance=rule)
+        if form.is_valid():
+            form.save()
+            return redirect('pricing_rule_list')
+    else:
+        form = PricingRuleForm(instance=rule)
+    return render(request, 'pricing_rule_form.html', {'form': form})
+
+def pricing_rule_delete(request, pk):
+    rule = get_object_or_404(PricingRule, pk=pk)
+    if request.method == 'POST':
+        rule.delete()
+        return redirect('pricing_rule_list')
+    return render(request, 'pricing_rule_confirm_delete.html', {'rule': rule})

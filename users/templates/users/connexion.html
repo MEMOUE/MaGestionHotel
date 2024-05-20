@@ -22,7 +22,7 @@
                 <div class="offset-md-4">
                     <form action="" method="post" class="form-control w-50">
                         {% csrf_token %}
-                        {% for field in form %}
+                        {% for field in form %} 
                             <div class="m-2">
                                 {{ field.label_tag }}
                                 {{ field }}

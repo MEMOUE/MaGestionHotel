@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
 
-
 class Chambre(models.Model):
     proprietaire = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -40,3 +39,11 @@ class Chambre(models.Model):
 
     def __str__(self):
         return f"{self.numero_chambre}"
+
+
+class TypeChambre(models.Model):
+    typechambre = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.typechambre

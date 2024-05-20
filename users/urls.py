@@ -1,12 +1,13 @@
 from django.contrib.auth import views
 from django.urls import path
-from .views import inscription, connexion, deconnexion, home
+from .views import inscription, connexion, deconnexion, home, menusysteme
 
 
 urlpatterns = [
     path("inscription/", inscription, name="inscription"),
     path("connexion/", connexion, name="connexion"),
     path("home/", home, name="home-users"),
+    path("menusysteme/",menusysteme, name="menusysteme"),
     path("deconnexion", deconnexion, name="deconnexion"),
 
     # gestion de reinitialisation de email

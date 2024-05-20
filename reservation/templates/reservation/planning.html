@@ -1,135 +1,123 @@
+{% load static %}
 <!DOCTYPE html>
-
-
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planning</title>
-    <!-- Inclure les liens vers les fichiers CSS de Bootstrap -->
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
+    <title>GestionHotel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
         }
-
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: left;
+        #menu {
+            width: 16.67%;
+            background-color: #343a40;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        #content {
+            width: 83.33%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .table-container {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .btn-custom {
+            width: 300px;
+            height: 100px;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        .table th:nth-child(1),
+        .table td:nth-child(1),
+        .table th:nth-child(2),
+        .table td:nth-child(2) {
+            width: 150px;
+            background-color: #d4edda;
+        }
+        .reservation-details {
+            cursor: pointer;
         }
     </style>
+</head>
+<body>
+    <div id="menu">
+        {% include "menu.html" %}
+    </div>
+    <div id="content">
+        <div class="container">
+            <div class="row">
+                <div class="d-flex justify-content-center align-items-center my-2">
+                    <a href="{% url 'add_reservation' %}" class="btn btn-success text-center">Nouvelle Reservation</a>
+                </div>
+                <div class="table-container">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>N° Chambre</th>
+                                <th>Prix Chambre</th>
+                                {% for date in dates_uniques %}
+                                    <th>{{ date }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in planning_data %}
+                                <tr>
+                                    <td>{{ data.numero_chambre }}</td>
+                                    <td>{{ data.prix }}</td>
+                                    {% for reservation in data.reservations %}
+                                        <td class="{% if reservation.statut == 'confirmée' %}bg-success {% elif reservation.statut == 'reservée' %}bg-warning {% elif reservation.statut == 'terminée' %}bg-danger{% endif %}">
+                                            <span class="reservation-details" data-bs-toggle="modal" data-bs-target="#exampleModal{{ reservation.id }}" data-adresse="{{ reservation.adresse_client }}">
+                                                {{ reservation.nom_client }} {{ reservation.prenom_client }}
+                                            </span>
 
-    <div>
-        <h1 class="container-fluid bg-dark text-white text-center mt-4 mb-4">Tableau de Bord</h1>
-
-        <div class="d-flex justify-content-center align-items-center my-2">
-            <a href="{% url 'add_reservation' %}" class="btn btn-success text-center">Nouvelle Reservation</a>
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="exampleModal{{ reservation.id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ reservation.id }}" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel{{ reservation.id }}">Information client</h1>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Nom: {{ reservation.nom_client }}</p>
+                                                            <p>Prénom: {{ reservation.prenom_client }}</p>
+                                                            <p>Adresse: {{ reservation.adresse_client }}</p>
+                                                            <p>Date de réservation: {{ reservation.date }}</p>
+                                                            <p>Date d'arrivée: {{ reservation.date_arrivee }}</p>
+                                                            <p>Nombre de jours: {{ reservation.nombre_jours }}</p>
+                                                            <p>Chambre Numero: {{ reservation.chambre }}</p>
+                                                            <p>Statut: {{ reservation.statut }}</p>
+                                                            <p>ID: {{ reservation.id }}</p>
+                                                            <p>Note: {{ reservation.note }}</p>
+                                                            <!-- Ajoutez d'autres détails ici -->
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <a href="modifier_reservation/{{ reservation.id }}" class="btn btn-primary">Modifier</a>
+                                                            <a href="supprimer_reservation/{{ reservation.id }}" class="btn btn-danger">Supprimer</a>
+                                                            <a href="copier_reservation_dans_historique/{{ reservation.id }}" class="btn btn-success">Terminer</a>
+                                                            <a href="facture/{{ reservation.id }}" class="btn btn-info">Facture</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>N° Chambre</th>
-                    <th>Prix Chambre</th>
-                    {% for date in dates_uniques %}
-                        <th>{{ date }}</th>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                {% for data in planning_data %}
-                    <tr>
-                        <th>{{ data.numero_chambre }}</th>
-                        <th>{{ data.prix }}</th>
-                        {% for reservation in data.reservations %}
-                            <td class="{% if reservation.statut == 'confirmée' %}bg-success {% elif reservation.statut == 'reservée' %}bg-warning {% elif reservation.statut == 'terminée' %}bg-danger{% endif %}">
-                                <span class="reservation-details" data-bs-toggle="modal" data-bs-target="#exampleModal{{ reservation.id }}" data-adresse="{{ reservation.adresse_client }}">
-                                    {{ reservation.nom_client }} {{ reservation.prenom_client }}
-                                </span>
-
-                                <!-- Modal -->
-                                <div class="modal fade" id="exampleModal{{ reservation.id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ reservation.id }}" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h1 class="modal-title fs-5" id="exampleModalLabel{{ reservation.id }}">Information client</h1>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>Nom: {{ reservation.nom_client }}</p>
-                                                <p>Prénom: {{ reservation.prenom_client }}</p>
-                                                <p>Adresse: {{ reservation.adresse_client }}</p>
-                                                <p>Date de réservation: {{ reservation.date }}</p>
-                                                <p>Date d'arrivée: {{ reservation.date_arrivee }}</p>
-                                                <p>Nombre de jours: {{ reservation.nombre_jours }}</p>
-                                                <p>Chambre Numero: {{ reservation.chambre }}</p>
-                                                <p>Statut: {{ reservation.statut }}</p>
-                                                <p>ID: {{ reservation.id }}</p>
-                                                <!-- Ajoutez d'autres détails ici -->
-                                            </div>
-                                            <div class="modal-footer">
-                                               <!-- <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>-->
-                                                 <a href="modifier_reservation/{{ reservation.id }}" class="btn btn-primary">Modifier</a>
-                                                 <a href="supprimer_reservation/{{ reservation.id }}" class="btn btn-danger">Supprimer</a>
-                                                <a href="copier_reservation_dans_historique/{{ reservation.id }}" class="btn btn-success">Terminer</a>
-                                                <a href="facture/{{ reservation.id }}" class="btn btn-info">Facture</a>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                        {% endfor %}
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
 
-    <!-- Inclure les scripts JavaScript de Bootstrap (facultatif, mais recommandé) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Script JavaScript pour afficher les détails du client dans la modal -->
- <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const reservationDetails = document.querySelectorAll('.reservation-details');
-
-        reservationDetails.forEach(reservation => {
-            reservation.addEventListener('click', function() {
-                const modalId = this.getAttribute('data-bs-target');
-                const nom = this.getAttribute('data-nom');
-                const prenom = this.getAttribute('data-prenom');
-                const adresse = this.getAttribute('data-adresse');
-                const date_reservation = this.getAttribute('data-date_reservation');
-                const date_arrivee = this.getAttribute('data-date_arrivee');
-                const nombre_jours = this.getAttribute('data-nombre_jours');
-                const statut = this.getAttribute('data-statut');
-                const id = this.getAttribute('data-id');
-
-                // Sélectionnez les éléments par leur ID pour mettre à jour les valeurs
-                document.getElementById('nom').innerText = "Nom: " + nom;
-                document.getElementById('prenom').innerText = "Prénom: " + prenom;
-                document.getElementById('adresse').innerText = "Adresse: " + adresse;
-                document.getElementById('date_reservation').innerText = "Date de réservation: " + date_reservation;
-                document.getElementById('date_arrivee').innerText = "Date d'arrivée: " + date_arrivee;
-                document.getElementById('nombre_jours').innerText = "Nombre de jours: " + nombre_jours;
-                document.getElementById('statut').innerText = "Statut: " + statut;
-                // Ajoutez ici la manipulation des autres détails le cas échéant
-                document.getElementById('statut').innerText = "ID: " + id;
-            });
-        });
-    });
-</script>
-
-
-
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

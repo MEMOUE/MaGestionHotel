@@ -1,5 +1,6 @@
 from .models import Chambre
 from django import forms
+from .models import TypeChambre
 
 class ChambreForm(forms.ModelForm):
     class Meta:
@@ -39,4 +40,14 @@ class ChambreForm(forms.ModelForm):
                 'required': 'Veuillez fournir une date.',
                 'invalid': 'Veuillez fournir une date valide.',
             },
+        }
+
+
+class TypeChambreForm(forms.ModelForm):
+    class Meta:
+        model = TypeChambre
+        fields = ['typechambre', 'description']
+        widgets = {
+            'typechambre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Type de chambre'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
         }

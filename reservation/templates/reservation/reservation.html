@@ -1,23 +1,77 @@
-{% extends "base.html" %}
-
-{% block content %}
-    <div class="container">
-        <h1 class="text-center orange">Réservation</h1>
-        <form method="post">
-            {% csrf_token %}
-            <div class="row">
-                {% for field in form %}
-                    <div class="col-md-6 my-1">
-                        {{ field.label_tag }}
-                        {{ field }}
-                    </div>
-                {% endfor %}
-                <input class="btn btn-primary btn-block col-md-12 my-2" type="submit" value="Réserver">
-            </div>
-        </form>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réservation - GestionHotel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #menu-container {
+            width: 300px;
+            background-color: #343a40;
+            color: white;
+            overflow-y: auto;
+        }
+        #main-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .nav-item {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        .nav-link {
+            background-color: #dddddd;
+            color: #000000;
+            border: 2px solid #000000;
+            border-radius: 10px;
+            padding: 10px 20px;
+        }
+        .nav-link:hover {
+            background-color: #ffffff;
+            color: #000000;
+        }
+        .menu-title {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .orange {
+            color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu-container">
+        {% include "menu.html" %}
     </div>
-{% endblock %}
+    <div id="main-content">
+        {% block content %}
+        <div class="container">
+            <h1 class="text-center orange">Créer Réservation</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    {% for field in form %}
+                        <div class="col-md-6 my-1">
+                            {{ field.label_tag }}
+                            {{ field }}
+                        </div>
+                    {% endfor %}
+                    <input class="btn btn-primary btn-block col-md-12 my-2" type="submit" value="Réserver">
+                </div>
+            </form>
+        </div>
+        {% endblock %}
+    </div>
 
-{% block footer %}
-    {% include "footer.html" %}
-{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
