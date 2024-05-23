@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from configuration.models import Configuration, Categories
+from configuration.models import Configuration, Categories, PricingRule
 
 # Register your models here.
 
@@ -27,3 +27,4 @@ class AdminCategorie(admin.ModelAdmin):
 
 admin.site.register(Configuration, AdminConfiguration)
 admin.site.register(Categories, AdminCategorie)
+admin.site.register(PricingRule)

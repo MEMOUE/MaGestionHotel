@@ -6,19 +6,21 @@ from reservation.models import Reservation, HistoriqueReservation
 from django.db.models import Count
 
 
+
+from django.http import JsonResponse
+from reservation.models import Reservation
+import json
+
 def statistics(request):
-    # Filtrer les réservations pour l'utilisateur connecté
-    user_reservations = Reservation.objects.filter(proprietaire=request.user)
+    reservations = Reservation.objects.all()
 
-    # Nombre total de réservations pour l'utilisateur connecté
-    total_reservations = user_reservations.count()
+    reservations_data = []
+    for reservation in reservations:
+        reservation_data = {
+            'date_arrivee': reservation.date_arrivee,
+            'paiement_anticipe': reservation.paiement_anticipe,
+            'frais_supplementaire': reservation.frais_supplementaire,
+        }
+        reservations_data.append(reservation_data)
 
-    # Nombre de réservations par statut pour l'utilisateur connecté
-    reservations_by_status = user_reservations.values('statut').annotate(count=Count('id'))
-
-    context = {
-        'total_reservations': total_reservations,
-        'reservations_by_status': reservations_by_status,
-        # Ajoutez d'autres variables contextuelles au besoin
-    }
-    return render(request, "statistique/statistics.html",context)
+    return render(request, 'statistique/statistics.html', {'reservations_data_json': json.dumps(reservations_data)})

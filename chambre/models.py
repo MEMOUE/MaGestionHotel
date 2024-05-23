@@ -42,6 +42,7 @@ class Chambre(models.Model):
 
 
 class TypeChambre(models.Model):
+    proprietaire = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     typechambre = models.CharField(max_length=255)
     description = models.TextField()
 

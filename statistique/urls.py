@@ -3,5 +3,5 @@ from .views import statistics
 
 
 urlpatterns = [
-    path("", statistics, name="statistics"),
+    path("statistics/", statistics, name="statistics"),
 ]

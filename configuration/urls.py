@@ -4,7 +4,7 @@ from configuration.views import home_config, CreateConfig, DetailConfig, ListCon
     UpdateConfig, update_rule, delete_rule,header,pricing_rule_list
 from . import views
 
-app_name = "confighotel"
+
 urlpatterns = [
     path("", home_config, name="home-config"),
     path("create-rule/", regle_prix, name="create-rule"),
@@ -20,7 +20,7 @@ urlpatterns = [
 
 
 
-    path('rules/', pricing_rule_list, name='pricing_rule_list'),
+    path('rules/', views.pricing_rule_list, name='pricing_rule_list'),
     path('rules/new/', views.pricing_rule_create, name='pricing_rule_create'),
     path('rules/<int:pk>/edit/', views.pricing_rule_update, name='pricing_rule_update'),
     path('rules/<int:pk>/delete/', views.pricing_rule_delete, name='pricing_rule_delete'),

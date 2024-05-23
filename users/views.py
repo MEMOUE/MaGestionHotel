@@ -14,7 +14,7 @@ def inscription(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Votre compte a été créé avec succès. Veuillez-vous connecter maintenant")
-            return redirect("connexion")
+            return redirect("inscription")
         else:
             # Afficher des messages d'erreur pour chaque champ
             for field, errors in form.errors.items():
@@ -54,6 +54,10 @@ def connexion(request):
 @login_required
 def home(request):
     return render(request, "users/accueil.html")
+
+#@login_required
+#def index(request):
+#    return render(request, "index.html")
 
 
 def menusysteme(request):

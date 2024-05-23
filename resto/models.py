@@ -6,14 +6,7 @@ from HotelPlus import settings
 # Create your models here.
 class Restaurant(models.Model):
     proprietaire = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-    TYPE_MENU = (
-        ("Boisson", "Boisson"),
-        ("Plat Traditionnel", "Plat Traditionnel"),
-        ("Plat Etranger", "Plat Etranger")
-    )
     nom_menu = models.CharField(max_length=150)
-    type = models.CharField(max_length=100, choices=TYPE_MENU)
-    quantite = models.IntegerField(default=0)
     image = models.ImageField(upload_to="resto", blank=True, null=True)
-    prix = models.FloatField(default=0.0)
-    date = models.DateField(auto_now=True)
+    prix_origine = models.FloatField(default=0.0)
+    prix_vente = models.FloatField(default=0.0)

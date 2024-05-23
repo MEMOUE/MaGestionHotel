@@ -11,10 +11,9 @@ class RestoForm(forms.ModelForm):
 
         widgets = {
             'nom_menu': forms.TextInput(attrs={'class': 'form-control orange-input', 'placeholder': 'Nom du menu'}),
-            'type': forms.Select(attrs={'class': 'form-select orange-input', 'placeholder': 'Type de menu'}),
-            'quantite': forms.NumberInput(attrs={'class': 'form-control green-input', 'placeholder': 'Quantité'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control white-input'}),
-            'prix': forms.NumberInput(attrs={'class': 'form-control white-input', 'placeholder': 'Prix'}),
+            'prix_origine': forms.NumberInput(attrs={'class': 'form-control white-input', 'placeholder': 'Prix'}),
+            'prix_vente': forms.NumberInput(attrs={'class': 'form-control white-input', 'placeholder': 'Prix'}),
             'date': forms.DateInput(attrs={'class': 'form-control white-input', 'type': 'date'}),
         }
 

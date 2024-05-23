@@ -1,32 +1,104 @@
-{% extends "base.html" %}
-
-{% block content %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Rapport Statistique Utilisateur</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Statistiques des Réservations</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Style global pour le layout */
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+        }
+        #menu {
+            width: 16.67%;
+            background-color: #343a40;
+            overflow-y: auto;
+            padding: 20px;
+            color: white;
+        }
+        #menu .nav-link {
+            color: #fff;
+        }
+        #menu .nav-link:hover {
+            background-color: #495057;
+        }
+        #content {
+            width: 83.33%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        /* Style spécifique à la page statistics.html */
+        #chart-container {
+            width: 80%;
+            margin: auto;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Rapport Statistique pour {{ user.username }}</h1>
+    <!-- Inclusion du menu -->
+    {% include 'menu.html' %}
 
-    <p>Nombre total de réservations : {{ total_reservations }}</p>
+    <!-- Contenu de la page -->
+    <div id="content">
+        <div class="text-center">
+            <h3 class="mt-4">Statistiques des Réservations</h3>
+        </div>
+        <div id="chart-container">
+            <canvas id="reservationChart" width="800" height="400"></canvas>
+        </div>
+    </div>
 
-    <h2>Répartition des réservations par statut :</h2>
-    <ul>
-        {% for entry in reservations_by_status %}
-            <li>{{ entry.statut }} : {{ entry.count }}</li>
-        {% endfor %}
-    </ul>
+    <!-- Script pour afficher le diagramme en barres -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Récupérer les données de réservation depuis le backend
+        const reservationsData = JSON.parse('{{ reservations_data_json | escapejs }}');
 
-    <p>Revenu total généré par les réservations : {{ total_income }}</p>
+        // Extraire les informations nécessaires pour le diagramme
+        const labels = reservationsData.map(reservation => reservation.date_arrivee);
+        const paiementAnticipe = reservationsData.map(reservation => reservation.paiement_anticipe);
+        const fraisSupplementaire = reservationsData.map(reservation => reservation.frais_supplementaire);
 
-    <!-- Ajoutez d'autres éléments du rapport ici -->
+        // Créer le contexte du canvas
+        const ctx = document.getElementById('reservationChart').getContext('2d');
 
+        // Créer le diagramme en barres
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Paiement Anticipé',
+                        data: paiementAnticipe,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Frais Supplémentaire',
+                        data: fraisSupplementaire,
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 </html>
-
-{% endblock %}
-
-{% block footer %}
-    {% include "footer.html" %}
-{% endblock %}

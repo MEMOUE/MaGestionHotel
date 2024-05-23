@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Chambre</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter/Modifier Autre Revenu ou Coût</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Inclure Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
@@ -17,6 +18,13 @@
             background-color: #343a40;
             overflow-y: auto;
             padding: 20px;
+            color: white;
+        }
+        #menu .nav-link {
+            color: #fff;
+        }
+        #menu .nav-link:hover {
+            background-color: #495057;
         }
         #content {
             width: 83.33%;
@@ -29,15 +37,6 @@
             margin-bottom: 20px;
             font-size: 14px;
         }
-        .table th:nth-child(1),
-        .table td:nth-child(1),
-        .table th:nth-child(2),
-        .table td:nth-child(2) {
-            width: 150px;
-        }
-        .reservation-details {
-            cursor: pointer;
-        }
         .orange {
             color: orange;
         }
@@ -49,23 +48,26 @@
         .form-group {
             margin-right: 10px;
         }
+        .card {
+            margin-bottom: 20px;
+        }
+        .card img {
+            height: 200px;
+            object-fit: cover;
+        }
     </style>
 </head>
 <body>
-    <!-- Inclusion du menu -->
     {% include 'menu.html' %}
-
-    <!-- Contenu de la page -->
     <div id="content">
-        <div class="container">
-            <h1 class="text-center orange">Chambre</h1>
-            <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button class="btn btn-primary" type="submit">Ajouter</button>
-            </form>
+        <div class="text-center">
+          <h3>Ajouter/Modifier Autre Revenu ou Coût</h3>
         </div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </form>
     </div>
-
 </body>
 </html>

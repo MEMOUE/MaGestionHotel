@@ -42,6 +42,7 @@ class Categories(models.Model):
     
 
 class PricingRule(models.Model):
+    proprietaire = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     prix = models.DecimalField(max_digits=10, decimal_places=2)
     date_heure_arrivee = models.DateTimeField()
     date_heure_depart = models.DateTimeField()

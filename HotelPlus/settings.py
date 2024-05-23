@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-d-n@01*)o_d6lxnijb^dikb5$9!1z+ab101=t9^x^%-n$gl+k%'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # url de heroku genere: magestionhotel-c5b9754e0827.herokuapp.com/
 ALLOWED_HOSTS = ['*']
@@ -139,7 +139,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+django_heroku.settings(locals())
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -158,16 +158,3 @@ EMAIL_PORT = 587  # Port SMTP de votre fournisseur de messagerie
 EMAIL_USE_TLS = True  # Ou False si votre fournisseur de messagerie ne prend pas en charge TLS
 EMAIL_HOST_USER = 'memouekone@esp.sn'  # Votre adresse e-mail
 EMAIL_HOST_PASSWORD = 'ESP45919'  # Votre mot de passe e-mail
-
-
-# la configuration pour le local
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
-

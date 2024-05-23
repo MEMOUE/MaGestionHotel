@@ -9,21 +9,32 @@ from django.urls import reverse_lazy
 class CreateMenu(CreateView):
     form_class = RestoForm
     template_name = "resto/add_menu.html"
-    success_url = "/resto"
+    success_url = "/resto/home-resto"
 
+    def form_valid(self, form):
+        # Récupérer l'utilisateur connecté
+        user = self.request.user
+        # Associer l'utilisateur au menu avant de le sauvegarder
+        form.instance.proprietaire = user
+        return super().form_valid(form)
 
 class ListMenu(LoginRequiredMixin, ListView):
     template_name = "resto/home_resto.html"
     model = Restaurant
 
     def get_queryset(self):
-        return Restaurant.objects.filter(proprietaire=self.request.user)
+        user = self.request.user
+        return Restaurant.objects.filter(proprietaire=user)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['menus'] = context['object_list']
+        return context
 
 class UpdateMenu(UpdateView):
     form_class = RestoForm
     template_name = "resto/add_menu.html"
-    success_url = reverse_lazy("resto:list_menu")
+    success_url = reverse_lazy("home-resto")
 
     def get_object(self):
         id = self.kwargs.get("id")
@@ -33,7 +44,7 @@ class UpdateMenu(UpdateView):
 class DeleteMenu(DeleteView):
     template_name = "resto/delete.html"
     queryset = Restaurant.objects.all()
-    success_url = reverse_lazy("resto:list_menu")
+    success_url = reverse_lazy("home-resto")
 
     def get_object(self):
         id = self.kwargs.get("id")

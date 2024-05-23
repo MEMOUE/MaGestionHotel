@@ -104,23 +104,32 @@ def header(request):
 
 
 
+from django.shortcuts import render, redirect, reverse
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse_lazy
+
 from .models import PricingRule
 from .forms import PricingRuleForm
 
+@login_required
 def pricing_rule_list(request):
-    rules = PricingRule.objects.all()
+    rules = PricingRule.objects.filter(proprietaire=request.user)
     return render(request, 'pricing_rule_list.html', {'rules': rules})
 
+@login_required
 def pricing_rule_create(request):
     if request.method == 'POST':
         form = PricingRuleForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('pricing_rule_list')
+            rule = form.save(commit=False)
+            rule.proprietaire = request.user
+            rule.save()
+            return redirect('pricing_rule_list') 
     else:
         form = PricingRuleForm()
     return render(request, 'pricing_rule_form.html', {'form': form})
 
+@login_required
 def pricing_rule_update(request, pk):
     rule = get_object_or_404(PricingRule, pk=pk)
     if request.method == 'POST':
@@ -132,6 +141,7 @@ def pricing_rule_update(request, pk):
         form = PricingRuleForm(instance=rule)
     return render(request, 'pricing_rule_form.html', {'form': form})
 
+@login_required
 def pricing_rule_delete(request, pk):
     rule = get_object_or_404(PricingRule, pk=pk)
     if request.method == 'POST':

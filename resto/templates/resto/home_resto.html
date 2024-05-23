@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}home-resto{% endblock %}
+{% block title %}Home Resto{% endblock %}
 
 {% block content %}
 <style>
@@ -52,32 +52,43 @@
         {% include 'menu.html' %}
     </div>
     <div id="content">
-        <a class="col-md-6 btn btn-primary mb-3" href="{% url 'add-menu' %}">Ajouter un menu</a>
+        <div class="text-center">
+            <a class="btn btn-success mb-3" href="{% url 'add-menu' %}"><i class="fas fa-plus-circle"></i> Créer Menu</a>
+        </div>
+        
         <h2 class="text-center orange">MENU</h2>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for object in object_list %}
-                <div class="col mb-2 mx-2">
-                    <div class="card h-100">
-                        <img src="{{ object.image.url }}" class="card-img-top" alt="Image du plat">
-                        <div class="card-body">
-                            <h5 class="card-title"><b>Nom du plat : </b>{{ object.nom_menu }}</h5>
-                            <p class="card-text">
-                                <b>Type : </b>{{ object.type }}<br>
-                                <b>Quantité : </b>{{ object.quantite }}<br>
-                                <b>Prix : </b>{{ object.prix }}
-                            </p>
-                            <p>
-                                <a class="btn btn-warning btn-sm" href="{% url 'update-menu' object.id %}">Modifier</a>
-                                <a class="btn btn-danger btn-sm" href="{% url 'delete-menu' object.id %}">Supprimer</a>
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-body-secondary">{{ object.date }}</small>
+
+        {% if object_list %}
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for object in object_list %}
+                    <div class="col mb-2 mx-2">
+                        <div class="card h-100">
+                            {% if object.image %}
+                                <img src="{{ object.image.url }}" class="card-img-top" alt="Image du plat">
+                            {% else %}
+                                <img src="path/to/default-image.jpg" class="card-img-top" alt="Image par défaut">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title"><b>Nom du plat : </b>{{ object.nom_menu }}</h5>
+                                <p class="card-text">
+                                    <b>Prix Origine : </b>{{ object.prix_origine }}<br>
+                                    <b>Prix Vente : </b>{{ object.prix_vente }}
+                                </p>
+                                <p>
+                                    <a class="btn btn-warning btn-sm" href="{% url 'update-menu' object.id %}">Modifier</a>
+                                    <a class="btn btn-danger btn-sm" href="{% url 'delete-menu' object.id %}">Supprimer</a>
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-body-secondary">{{ object.date }}</small>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>Aucun menu disponible.</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

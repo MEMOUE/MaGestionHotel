@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Autres Revenus et Coûts</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+        }
+        #menu {
+            width: 16.67%;
+            background-color: #343a40;
+            overflow-y: auto;
+            padding: 20px;
+            color: white;
+        }
+        #menu .nav-link {
+            color: #fff;
+        }
+        #menu .nav-link:hover {
+            background-color: #495057;
+        }
+        #content {
+            width: 83.33%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .btn-custom {
+            width: auto;
+            height: 38px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        .orange {
+            color: orange;
+        }
+        .form-inline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .form-group {
+            margin-right: 10px;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .card img {
+            height: 200px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    {% include 'menu.html' %}
+    <div id="content">
+        <h2>Liste des Autres Revenus et Coûts</h2>
+        <div class="text-center">
+          <a href="{% url 'autre_revenu_cout_create' %}" class="btn btn-success mb-2"><i class="fas fa-plus-circle"></i> Créer</a>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Temps</th>
+                    <th>Montant</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for revenu_cout in revenus_couts %}
+                <tr>
+                    <td>{{ revenu_cout.type }}</td>
+                    <td>{{ revenu_cout.temps }}</td>
+                    <td>{{ revenu_cout.montant }}</td>
+                    <td>
+                        <a href="{% url 'autre_revenu_cout_update' revenu_cout.pk %}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> </a>
+                        <a href="{% url 'autre_revenu_cout_delete' revenu_cout.pk %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">Aucun autre revenu ou coût enregistré.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
