@@ -1,0 +1,12 @@
+Django
+django-recaptcha
+django-heroku
+dj-database-url
+python-dotenv
+django-simple-captcha
+django-allauth
+PyJWT
+cryptography
+reportlab
+django-recaptcha
+plotly

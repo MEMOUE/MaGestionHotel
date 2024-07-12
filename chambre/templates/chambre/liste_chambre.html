@@ -1,55 +1,13 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des chambres</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Inclure Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        body {
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-            margin: 0;
-        }
-        #menu {
-            width: 16.67%;
-            background-color: #343a40;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        #content {
-            width: 83.33%;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .btn-custom {
-            width: auto;
-            height: 38px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .table th:nth-child(1),
-        .table td:nth-child(1),
-        .table th:nth-child(2),
-        .table td:nth-child(2) {
-            width: 150px;
-        }
-        .reservation-details {
-            cursor: pointer;
-        }
-        .orange {
-            color: orange;
-        }
-        .form-inline {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .form-group {
-            margin-right: 10px;
-        }
-    </style>
+    <link href="{% static 'style.css' %}" rel="stylesheet">
 </head>
 <body>
     <!-- Inclusion du menu -->
@@ -58,7 +16,7 @@
     <!-- Contenu de la page -->
     <div id="content">
         <div class="container">
-            <h3 class="text-center ">Liste des chambres</h3>
+            <h3 class="text-center">Liste des chambres</h3>
             <div class="d-flex justify-content-center align-items-center my-2">
                 <a href="{% url 'chambre' %}" class="btn btn-success text-center"><i class="fas fa-plus-circle"></i> Créer</a>
             </div>
@@ -87,7 +45,7 @@
                                 {{ chambre.get_etat_display }}
                             </td>
                             <td>
-                                <a href="{% url 'modifier_chambre' chambre.id %}" class="btn btn-primary"><i class="fas fa-edit"></a>
+                                <a href="{% url 'modifier_chambre' chambre.id %}" class="btn btn-primary"><i class="fas fa-edit"></i></a>
                                 <a href="{% url 'supprimer_chambre' chambre.id %}" class="btn btn-danger"><i class="fas fa-trash"></i> </a>
                             </td>
                         </tr>
@@ -101,4 +59,5 @@
         </div>
     </div>
 
+</body>
 </html>

@@ -1,3 +1,5 @@
+# forms.py
+
 from django import forms
 from .models import Reservation
 from chambre.models import Chambre
@@ -5,7 +7,7 @@ from chambre.models import Chambre
 class ReservationForm(forms.ModelForm):
     class Meta:
         model = Reservation
-        exclude = ['proprietaire']
+        exclude = ['proprietaire', 'numero_facture']
         fields = "__all__"
         widgets = {
             'nom_client': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom du client'}),

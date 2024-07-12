@@ -1,57 +1,36 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, UpdateView, DetailView, ListView
-from configuration.forms import ConfigForm, ReglePrixForm
-from configuration.models import Configuration, Categories
+from configuration.forms import ConfigForm
+from configuration.models import Configuration
+from django.contrib import messages
 
 
 def home_config(request):
     return render(request, "confighotel/home.html")
 
-
-def regle_prix(request):
-    form = ReglePrixForm()
-    if request.method == "POST":
-        form = ReglePrixForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("confighotel:home-config")
-    return render(request, "confighotel/create_rules.html", context={"form": form})
-
-
-def update_rule(request, id):
-    obj = get_object_or_404(Categories, id=id)
-    if request.method == "POST":
-        form = ReglePrixForm(request.POST, instance=obj)
-        if form.is_valid():
-            form.save()
-            return redirect("confighotel:list-rule")
-    else:
-        form = ReglePrixForm(instance=obj)
-    return render(request, "confighotel/update_rule.html", {"form": form})
-
-
-def delete_rule(request, id):
-    regle = get_object_or_404(Categories, id=id)
-    if request.method == "POST":
-        regle.delete()
-        return redirect("confighotel:list-rule")
-    return render(request, "confighotel/delete_rule.html")
-
-
 class CreateConfig(LoginRequiredMixin, CreateView):
     form_class = ConfigForm
     template_name = "confighotel/add.html"
-    success_url = reverse_lazy("confighotel:home-config")
+    success_url = reverse_lazy("home-config")
+
+    def dispatch(self, request, *args, **kwargs):
+        # Vérifiez si l'utilisateur a déjà une configuration
+        if Configuration.objects.filter(proprietaire=request.user).exists():
+            messages.error(request, "Vous avez déjà une configuration.")
+            config = Configuration.objects.get(proprietaire=request.user)
+            return redirect("detail-config", pk=config.pk)
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.proprietaire = self.request.user
+        messages.success(self.request, "Configuration créée avec succès.")
         return super().form_valid(form)
 
     def get_queryset(self):
         return Configuration.objects.filter(proprietaire=self.request.user)
-
 
 class ListConfig(LoginRequiredMixin, ListView):
     template_name = "confighotel/list_config.html"
@@ -59,21 +38,16 @@ class ListConfig(LoginRequiredMixin, ListView):
     def get_queryset(self):
         return Configuration.objects.filter(proprietaire=self.request.user)
 
-
-class ListRegle(LoginRequiredMixin, ListView):
-    template_name = "confighotel/list_regle.html"
-
-    def get_queryset(self):
-        # Filtrer les catégories par l'utilisateur connecté
-        return Categories.objects.filter(proprietaire=self.request.user)
-
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['has_config'] = Configuration.objects.filter(proprietaire=self.request.user).exists()
+        return context
 
 class DetailConfig(LoginRequiredMixin, DetailView):
     template_name = "confighotel/detail_config.html"
 
     def get_queryset(self):
         return Configuration.objects.filter(proprietaire=self.request.user)
-
 
 class UpdateConfig(LoginRequiredMixin, UpdateView):
     form_class = ConfigForm
@@ -84,8 +58,8 @@ class UpdateConfig(LoginRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         form.instance.proprietaire = self.request.user
+        messages.success(self.request, "Configuration mise à jour avec succès.")
         return super().form_valid(form)
-
 
 def update_config(request):
     last = Configuration.objects.all().count()
@@ -93,21 +67,28 @@ def update_config(request):
     form = ConfigForm(request.POST or None, instance=obj)
     if form.is_valid():
         form.save()
-        return redirect("confighotel:detail-config")
+        messages.success(request, "Configuration mise à jour avec succès.")
+        return redirect('list-config')
     return render(request, "confighotel/add.html", {"form": form})
 
+@login_required
+def delete_config(request, pk):
+    config = get_object_or_404(Configuration, pk=pk, proprietaire=request.user)
+    if request.method == 'POST':
+        config.delete()
+        messages.success(request, "Configuration supprimée avec succès.")
+        return redirect('list-config')
+    return render(request, 'confighotel/confirm_delete.html', {'config': config})
 
 def header(request):
-    conf = Configuration.objects.filter(proprietaire=request.user).first()  # Utilisez .first() pour obtenir un seul objet
-    context = {'config': conf}  # Utilisez la clé 'configuration' au lieu de 'conf'
-    return render(request, 'header.html', context)  # Passez le dictionnaire contexte
+    conf = Configuration.objects.filter(proprietaire=request.user).first()
+    context = {'config': conf}
+    return render(request, 'header.html', context)
 
 
-
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse_lazy
-
 from .models import PricingRule
 from .forms import PricingRuleForm
 

@@ -1,53 +1,15 @@
-{% extends 'base.html' %}
-
-{% block title %}Home Resto{% endblock %}
-
-{% block content %}
-<style>
-    /* Style global pour le layout */
-    body {
-        display: flex;
-        height: 100vh;
-        overflow: hidden;
-    }
-    #menu {
-        width: 16.67%;
-        background-color: #343a40;
-        overflow-y: auto;
-        padding: 20px;
-    }
-    #content {
-        width: 83.33%;
-        padding: 20px;
-        overflow-y: auto;
-    }
-    .btn-custom {
-        width: auto;
-        height: 38px;
-        margin-bottom: 20px;
-        font-size: 14px;
-    }
-    .orange {
-        color: orange;
-    }
-    .form-inline {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .form-group {
-        margin-right: 10px;
-    }
-    .card {
-        margin-bottom: 20px;
-    }
-    .card img {
-        height: 200px;
-        object-fit: cover;
-    }
-</style>
-
-<div style="display: flex; width: 100%; height: 100%;">
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Resto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+</head>
+<body>
     <div id="menu">
         {% include 'menu.html' %}
     </div>
@@ -55,8 +17,8 @@
         <div class="text-center">
             <a class="btn btn-success mb-3" href="{% url 'add-menu' %}"><i class="fas fa-plus-circle"></i> Créer Menu</a>
         </div>
-        
-        <h2 class="text-center orange">MENU</h2>
+
+        <h2 class="text-center text-warning">MENU</h2>
 
         {% if object_list %}
             <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -90,9 +52,6 @@
             <p>Aucun menu disponible.</p>
         {% endif %}
     </div>
-</div>
-{% endblock %}
-
-{% block footer %}
-    {% include "footer.html" %}
-{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

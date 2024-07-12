@@ -1,21 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .forms import ChambreForm
 from .models import Chambre
 from .models import TypeChambre
 from .forms import TypeChambreForm
 
+@login_required
 def chambre_view(request):
     if request.method == 'POST':
-        form = ChambreForm(request.POST)
+        form = ChambreForm(user=request.user, data=request.POST)
         if form.is_valid():
-            # Modifiez la logique pour associer la chambre à l'utilisateur connecté
             chambre = form.save(commit=False)
-            chambre.proprietaire = request.user  # Associe la chambre à l'utilisateur connecté
+            chambre.proprietaire = request.user
             chambre.save()
             return redirect('liste_chambre')
     else:
-        form = ChambreForm()
+        form = ChambreForm(user=request.user)  # Pass request.user as 'user' argument
     return render(request, 'chambre/chambre.html', {'form': form})
+
 
 def liste_chambre(request):
     # Récupérer les chambres associées à l'utilisateur connecté
@@ -44,31 +46,39 @@ def supprimer_chambre(request, chambre_id):
     return render(request, 'chambre/supprimer_chambre.html', {'chambre': chambre})
 
 
+@login_required
 def typechambre_list(request):
-    types = TypeChambre.objects.all()
+    types = TypeChambre.objects.filter(proprietaire=request.user)
     return render(request, 'chambre/typechambre_list.html', {'types': types})
 
+@login_required
 def typechambre_new(request):
     if request.method == "POST":
         form = TypeChambreForm(request.POST)
         if form.is_valid():
-            form.save()
+            typechambre = form.save(commit=False)
+            typechambre.proprietaire = request.user
+            typechambre.save()
             return redirect('typechambre_list')
     else:
         form = TypeChambreForm()
     return render(request, 'chambre/typechambre_new.html', {'form': form})
 
+@login_required
 def typechambre_edit(request, pk):
     typechambre = get_object_or_404(TypeChambre, pk=pk)
     if request.method == "POST":
         form = TypeChambreForm(request.POST, instance=typechambre)
         if form.is_valid():
-            form.save()
+            typechambre = form.save(commit=False)
+            typechambre.proprietaire = request.user
+            typechambre.save()
             return redirect('typechambre_list')
     else:
         form = TypeChambreForm(instance=typechambre)
     return render(request, 'chambre/typechambre_edit.html', {'form': form})
 
+@login_required
 def typechambre_delete(request, pk):
     typechambre = get_object_or_404(TypeChambre, pk=pk)
     if request.method == "POST":

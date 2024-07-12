@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Users
+from .models import Users, SecondaryUser
 
 # Register your models here.
 
@@ -13,3 +13,4 @@ class UsersAdmin(admin.ModelAdmin):
         css = {
             'all': ('css/admin.css', )
         }
+admin.site.register(SecondaryUser)

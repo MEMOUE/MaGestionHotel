@@ -1,6 +1,4 @@
-{% extends 'header.html' %}
 
-{% block title %}home-chambre{% endblock %}
 
 {% block content %}
 <style>
@@ -46,15 +44,10 @@
     </div>
     <div id="content">
         <div class="row">
-            <button class="col-sm-6 m-3 w-25 btn btn-primary"><a class="text-decoration-none text-white" href="{% url 'confighotel:create-config' %}">Configuration</a></button>
-            <button class="col-sm-6 m-3 w-25 btn btn-primary"><a class="text-decoration-none text-white" href="{% url 'confighotel:create-rule' %}">Règle de prix</a></button>
-            <button class="col-sm-6 m-3 w-25 btn btn-primary"><a class="text-decoration-none text-white" href="{% url 'confighotel:list-config' %}">Voir configuration</a></button>
-            <button class="col-sm-6 m-3 w-25 btn btn-primary"><a class="text-decoration-none text-white" href="{% url 'confighotel:list-rule' %}">Voir règle de prix</a></button>
+            <button class="col-sm-6 m-3 w-25 btn btn-primary"><a class="text-decoration-none text-white" href="{% url 'password_change' %}">Changer de mot de passe</a></button>
+            <button class="col-sm-6 m-3 w-25 btn btn-primary"><a class="text-decoration-none text-white" href="{% url 'list-config' %}">Voir configuration</a></button>
         </div>
     </div>
 </div>
 {% endblock %}
 
-{% block footer %}
-    {% include "footer.html" %}
-{% endblock %}

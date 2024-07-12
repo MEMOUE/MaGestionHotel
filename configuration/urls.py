@@ -1,23 +1,19 @@
 from django.urls import path
 
-from configuration.views import home_config, CreateConfig, DetailConfig, ListConfig, regle_prix, ListRegle, update_config, \
-    UpdateConfig, update_rule, delete_rule,header,pricing_rule_list
+from configuration.views import home_config, CreateConfig, DetailConfig, ListConfig, update_config, \
+    UpdateConfig, header, delete_config
 from . import views
+
 
 
 urlpatterns = [
     path("", home_config, name="home-config"),
-    path("create-rule/", regle_prix, name="create-rule"),
-    path("list-rule/", ListRegle.as_view(), name="list-rule"),
-    path("update-rule/<int:id>", update_rule, name="update-rule"),
-    path("delete-rule/<int:id>", delete_rule, name="delete-rule"),
     path("create/", CreateConfig.as_view(), name="create-config"),
     path("list/", ListConfig.as_view(), name="list-config"),
     path("detail/<int:pk>", DetailConfig.as_view(), name="detail-config"),
-    path("update-config/<int:pk>", UpdateConfig.as_view(), name="update-config"),
-    path("update-config/", update_config, name="update-config"),
+    path("update/<int:pk>", UpdateConfig.as_view(), name="update-config"),
+    path("delete/<int:pk>/", delete_config, name="delete-config"),
     path("header/", header, name="header"),
-
 
 
     path('rules/', views.pricing_rule_list, name='pricing_rule_list'),

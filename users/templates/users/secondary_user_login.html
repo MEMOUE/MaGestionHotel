@@ -1,0 +1,13 @@
+<html>
+<head>
+    <title>Connexion Utilisateur Secondaire</title>
+</head>
+<body>
+    <h2>Connexion Utilisateur Secondaire</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Se connecter</button>
+    </form>
+</body>
+</html>

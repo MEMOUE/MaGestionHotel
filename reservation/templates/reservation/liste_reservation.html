@@ -1,110 +1,68 @@
-<!-- {% extends "base.html" %}
-{% block title %}Liste des réservations{% endblock %}
-{% block content %} -->
-    <style>
-        /* Votre CSS existant */
-        body {
-            display: flex;
-            height: 100vh;
-            overflow: hidden;
-        }
-        #menu {
-            width: 16.67%;
-            background-color: #343a40;
-            overflow-y: auto;
-            padding: 20px;
-        }
-        #content {
-            width: 83.33%;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        .table-container {
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-        .btn-custom {
-            width: auto; /* Ajustez la largeur automatique */
-            height: 38px; /* Ajustez la hauteur */
-            margin-bottom: 20px;
-            font-size: 14px; /* Ajustez la taille de police */
-        }
-        .table th:nth-child(1),
-        .table td:nth-child(1),
-        .table th:nth-child(2),
-        .table td:nth-child(2) {
-            width: 150px;
-            
-        }
-        .reservation-details {
-            cursor: pointer;
-        }
-        .orange {
-            color: orange;
-        }
-        /* Nouveau style pour aligner les éléments en ligne */
-        .form-inline {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .form-group {
-            margin-right: 10px; /* Ajoutez un espace entre les champs */
-        }
-    </style>
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Type de Chambre</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Inclure Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- Inclusion du menu -->
+    {% include 'menu.html' %}
 
-    <div class="container-fluid">
-        <div class="row">
-            <div id="menu">
-                {% include "menu.html" %}
-            </div>
-            <div id="content">
-                <div class="d-flex justify-content-center align-items-center my-2">
-                    <a href="{% url 'add_reservation' %}" class="btn btn-success text-center">Nouvelle Reservation</a>
-                </div>
-                <!-- Formulaire de recherche par intervalle de dates -->
-                <h1 class="text-center orange">Liste des réservations</h1>
-                <form method="GET" action="{% url 'liste_reservation' %}" class="form-inline">
-                   
-                    <input type="date" class="form-control m-3" id="start_date" name="start_date">
-                    <input type="date" class="form-control m-3" id="end_date" name="end_date">
-                    <button type="submit" class="btn btn-primary btn-custom m-3">Rechercher</button>
-                </form>
-
-                <!-- Liste des réservations filtrées -->
-                <div class="table-container">
-                    <table class="table table-striped ">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Nom Client</th>
-                                <th>Date d'arrivée</th>
-                                <th>Date de départ</th>
-                                <th>Statut</th>
-                                <th>Paiement anticipé</th>
-                                <th>Note</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for reservation in reservations %}
+    <div id="content">
+        <div class="container-fluid">
+            <div class="row">
+               
+                <div id="content">
+                    <div class="d-flex justify-content-center align-items-center my-2">
+                        <a href="{% url 'add_reservation' %}" class="btn btn-success text-center">Nouvelle Reservation</a>
+                    </div>
+                    <h1 class="text-center orange">Liste des réservations</h1>
+                    <form method="GET" action="{% url 'liste_reservation' %}" class="form-inline">
+                        <input type="date" class="form-control m-3" id="start_date" name="start_date">
+                        <input type="date" class="form-control m-3" id="end_date" name="end_date">
+                        <button type="submit" class="btn btn-primary btn-custom m-3">Rechercher</button>
+                    </form>
+                    <div class="table-container">
+                        <table class="table table-striped ">
+                            <thead>
                                 <tr>
-                                    <td>{{ reservation.id }}</td>
-                                    <td>{{ reservation.nom_client }} {{ reservation.prenom_client }}</td>
-                                    <td>{{ reservation.date_arrivee }}</td>
-                                    <td>{{ reservation.date_depart }}</td>
-                                    <td>{{ reservation.statut }}</td>
-                                    <td>{{ reservation.paiement_anticipe }}</td>
-                                    <td>{{ reservation.note }}</td>
+                                    <th>ID</th>
+                                    <th>Nom Client</th>
+                                    <th>Date d'arrivée</th>
+                                    <th>Date de départ</th>
+                                    <th>Statut</th>
+                                    <th>Paiement anticipé</th>
+                                    <th>Note</th>
                                 </tr>
-                            {% empty %}
-                                <tr>
-                                    <td colspan="7">Aucune réservation enregistrée pour cet intervalle de dates.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {% for reservation in reservations %}
+                                    <tr>
+                                        <td>{{ reservation.id }}</td>
+                                        <td>{{ reservation.nom_client }} {{ reservation.prenom_client }}</td>
+                                        <td>{{ reservation.date_arrivee }}</td>
+                                        <td>{{ reservation.date_depart }}</td>
+                                        <td>{{ reservation.statut }}</td>
+                                        <td>{{ reservation.paiement_anticipe }}</td>
+                                        <td>{{ reservation.note }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="7">Aucune réservation enregistrée pour cet intervalle de dates.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-{% endblock %}
+</body>
+</html>

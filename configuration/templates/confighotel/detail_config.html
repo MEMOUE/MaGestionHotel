@@ -1,11 +1,46 @@
-{% extends 'base.html' %}
-
-{% block title %}detail-chambre{% endblock %}
-
-{% block content %}
-    <img src="{{ object.image.url }}" class="logo">
-    <h3>Nom Hotel : <a href="{% url 'confighotel:list-config' %}">{{ object.nom }}</a></h3>
-    <p>Telephone  : {{ object.telephone }}</p>
-    <p>Adresse    : {{ object.adresse }}</p>
-    <a href="{% url 'confighotel:update-config' object.pk %}">Modifier</a>
-{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detail de la chambre</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .logo {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        h3 {
+            margin-bottom: 10px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="{{ object.image.url }}" class="logo">
+        <h3>Nom Hotel : <a href="{% url 'confighotel:list-config' %}">{{ object.nom }}</a></h3>
+        <p>Telephone  : {{ object.telephone }}</p>
+        <p>Adresse    : {{ object.adresse }}</p>
+        <a href="{% url 'confighotel:update-config' object.pk %}">Modifier</a>
+    </div>
+</body>
+</html>

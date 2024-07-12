@@ -1,21 +1,21 @@
 {% extends 'base.html' %}
 
-{% block title %}create-rule-chambre{% endblock %}
+{% block title %}Créer Règle de Prix{% endblock %}
 
 {% block content %}
-    <h2 class="text-center orange">Ajouter une nouvelle règle de prix</h2>
+    <h2 class="text-center text-primary">Ajouter une nouvelle règle de prix</h2>
     <div class="container">
-        <div class="row">
-            <div class="form-group m-3">
-                <div class="offset-md-2">
-                    <form action="" method="post" class="form-control w-50">
-                        <table>
-                            {% csrf_token %}
-                            {{ form.as_table }}
-                        </table>
-                        <input type="submit" value="creer" class="m-2 col-md-6 margin-left-input">
-                    </form>
-                </div>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <form method="post" class="form-horizontal">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <button type="submit" class="btn btn-primary w-100">Créer</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

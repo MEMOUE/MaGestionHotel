@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Créer un Utilisateur Secondaire</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+        }
+        #menu {
+            width: 16.67%;
+            background-color: #343a40;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        #content {
+            width: 83.33%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .btn-custom {
+            width: auto;
+            height: 38px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu">
+        {% include 'menu.html' %}
+    </div>
+    <div id="content">
+        <div class="container text-center">
+            <h2>Créer un Utilisateur Secondaire</h2>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-success btn-custom">
+                    <i class="fas fa-save"></i> Créer
+                </button>
+            </form>
+            <a href="{% url 'list_secondary_users' %}" class="btn btn-secondary mt-2">Retour à la liste</a>
+        </div>
+    </div>
+</body>
+</html>

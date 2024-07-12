@@ -1,17 +1,42 @@
-<!-- supprimer_chambre.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmer la suppression de la chambre {{ chambre.numero_chambre }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- Inclusion du menu -->
+    {% include 'menu.html' %}
 
-{% extends 'base.html' %}
-
-{% block title %}Supprimer la chambre{% endblock %}
-
-{% block content %}
-    <div class="container">
-        <h1>Supprimer la chambre {{ chambre.numero_chambre }}</h1>
-        <form method="POST" action="{% url 'supprimer_chambre' chambre.id %}">
-            {% csrf_token %}
-            <p>Êtes-vous sûr de vouloir supprimer cette chambre?</p>
-            <a href="{% url 'liste_chambre' %}" class="btn btn-danger">Supprimer</a>
-            <a href="{% url 'liste_chambre' %}" class="btn btn-secondary">Annuler</a>
-        </form>
+    <!-- Contenu de la page -->
+    <div id="content">
+        <div class="container mt-4">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h1>Confirmer la suppression</h1>
+                </div>
+                <div class="card-body">
+                    <p>Êtes-vous sûr de vouloir supprimer la chambre <strong>"{{ chambre.numero_chambre }}"</strong> ?</p>
+                    <form method="POST" action="{% url 'supprimer_chambre' chambre.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i> Confirmer
+                        </button>
+                        <a href="{% url 'liste_chambre' %}" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Annuler
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-{% endblock %}
+
+    <!-- Scripts JavaScript (si nécessaire) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

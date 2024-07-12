@@ -1,16 +1,29 @@
-<!-- modifier_chambre.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier la chambre N° {{ chambre.numero_chambre }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="{% static 'style.css' %}" rel="stylesheet">
+</head>
+<body>
+    <!-- Inclusion du menu -->
+    {% include 'menu.html' %}
 
-{% extends 'base.html' %}
-
-{% block title %}Modifier la chambre{% endblock %}
-
-{% block content %}
-    <div class="container">
-        <h1>Modifier la chambre {{ chambre.numero_chambre }}</h1>
-        <form method="POST">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
-        </form>
+    <!-- Contenu de la page -->
+    <div id="content">
+        <div class="container">
+            <h1 class="text-center">Modifier la chambre N° {{ chambre.numero_chambre }}</h1>
+            <form method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Enregistrer</button>
+            </form>
+        </div>
     </div>
-{% endblock %}
+
+</body>
+</html>

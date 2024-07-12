@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supprimer un Utilisateur Secondaire</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+        }
+        #menu {
+            width: 16.67%;
+            background-color: #343a40;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        #content {
+            width: 83.33%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .btn-custom {
+            width: auto;
+            height: 38px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="menu">
+        {% include 'menu.html' %}
+    </div>
+    <div id="content">
+        <div class="container text-center">
+            <h2>Supprimer un Utilisateur Secondaire</h2>
+            <p>Êtes-vous sûr de vouloir supprimer l'utilisateur secondaire <strong>{{ secondary_user.username }}</strong> ?</p>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-custom">
+                    <i class="fas fa-trash"></i> Supprimer
+                </button>
+                <a href="{% url 'list_secondary_users' %}" class="btn btn-secondary btn-custom">Annuler</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

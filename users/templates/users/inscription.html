@@ -1,62 +1,77 @@
-{% extends "base.html" %}
-
-{% block title %}Inscription {% endblock %}
-
-{% block content %}
-
-{% if messages %}
-    {% for message in messages %}
-        {% if message.tags == 'error' %}
-            <div class="alert alert-danger text-center">
-                {{ message }}
-            </div>
-        {% elif message.tags == 'success' %}
-            <div class="alert alert-success text-center">
-                {{ message }}
-            </div>
-        {% endif %}
-    {% endfor %}
-{% endif %}
-
-<section class="subscription">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h6 class="text-center">Inscription - Avez-vous déjà un compte? <a href="{% url 'index' %}">Connexion</a></h6>
-</h4>
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="content">
+        {% block content %}
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'error' %}
+                    <div class="alert alert-danger text-center">
+                        {{ message }}
                     </div>
-                    <div class="card-body">
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                {{ form.username.label_tag }}
-                                {{ form.username }}
+                {% elif message.tags == 'success' %}
+                    <div class="alert alert-success text-center">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <section class="subscription m-5">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="text-center">Inscription - Avez-vous déjà un compte? <a href="{% url 'index' %}">Connexion</a></h6>
                             </div>
-                            <div class="form-group">
-                                {{ form.email.label_tag }}
-                                {{ form.email }}
+                            <div class="card-body">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group mb-3">
+                                        <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+                                        <input type="text" class="form-control" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" value="{{ form.username.value|default_if_none:'' }}">
+                                        {% for error in form.username.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                                        <input type="email" class="form-control" name="{{ form.email.name }}" id="{{ form.email.id_for_label }}" value="{{ form.email.value|default_if_none:'' }}">
+                                        {% for error in form.email.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="{{ form.password1.id_for_label }}">{{ form.password1.label }}</label>
+                                        <input type="password" class="form-control" name="{{ form.password1.name }}" id="{{ form.password1.id_for_label }}" value="{{ form.password1.value|default_if_none:'' }}">
+                                        {% for error in form.password1.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label for="{{ form.password2.id_for_label }}">{{ form.password2.label }}</label>
+                                        <input type="password" class="form-control" name="{{ form.password2.name }}" id="{{ form.password2.id_for_label }}" value="{{ form.password2.value|default_if_none:'' }}">
+                                        {% for error in form.password2.errors %}
+                                            <div class="text-danger">{{ error }}</div>
+                                        {% endfor %}
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-rounded">Inscrire</button>
+                                </form>
                             </div>
-                            <div class="form-group">
-                                {{ form.password1.label_tag }}
-                                {{ form.password1 }}
-                            </div>
-                            <div class="form-group">
-                                {{ form.password2.label_tag }}
-                                {{ form.password2 }}
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-rounded">Inscrire</button>
-                        </form>
-
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+        {% endblock %}
     </div>
-</section>
-{% endblock %}
-
-{% block footer %}
-    {% include "footer.html" %}
-{% endblock %}
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accès refusé</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            justify-content: center;
+            align-items: center;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+        .error-container {
+            max-width: 600px;
+        }
+        .error-code {
+            font-size: 10rem;
+            font-weight: bold;
+        }
+        .error-message {
+            font-size: 1.5rem;
+        }
+        .error-description {
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">403</div>
+        <div class="error-message">Accès refusé</div>
+        <div class="error-description">
+            Désolé, vous n'êtes pas autorisé à accéder à cette page.
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-primary">Retour à l'accueil</a>
+    </div>
+</body>
+</html>

@@ -1,7 +1,5 @@
 from django import forms
-
-from configuration.models import Configuration, Categories
-
+from configuration.models import Configuration
 
 class ConfigForm(forms.ModelForm):
     class Meta:
@@ -10,23 +8,11 @@ class ConfigForm(forms.ModelForm):
         fields = "__all__"
 
         widgets = {
-            "nom": forms.TextInput(attrs={"class": "form-control m-2"}),
-            "telephone": forms.TextInput(attrs={"class": "form-control m-2"}),
-            "adresse": forms.TextInput(attrs={"class": "form-control m-2"})
+            "nom": forms.TextInput(attrs={"class": "form-control w-100"}),
+            "telephone": forms.TextInput(attrs={"class": "form-control w-100"}),
+            "adresse": forms.TextInput(attrs={"class": "form-control w-100"})
         }
 
-
-class ReglePrixForm(forms.ModelForm):
-    class Meta:
-        model = Categories
-        exclude = ['proprietaire']
-        fields = "__all__"
-
-        widgets = {
-            "categorie": forms.Select(attrs={"class": "form-select m-2"}),
-            "prix_enfant": forms.NumberInput(attrs={"class": "form-control m-2"}),
-            "prix_adulte": forms.NumberInput(attrs={"class": "form-control m-2"})
-        }
 
 from .models import PricingRule
 

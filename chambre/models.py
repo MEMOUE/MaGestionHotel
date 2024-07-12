@@ -10,29 +10,12 @@ class Chambre(models.Model):
     )
     numero_chambre = models.IntegerField(default=0)
 
-    TYPE_SIMPLE = 'simple'
-    TYPE_DOUBLE = 'double'
-    TYPE_CHOICES = [
-        (TYPE_SIMPLE, 'Simple'),
-        (TYPE_DOUBLE, 'Double'),
-    ]
-    type_chambre = models.CharField(max_length=10, null=True, choices=TYPE_CHOICES)
-
-    ETAT_LIBRE = 'libre'
-    ETAT_OCCUPEE = 'occupee'
-    ETAT_CHOICES = [
-        (ETAT_LIBRE, 'Libre'),
-        (ETAT_OCCUPEE, 'Occupée'),
-    ]
-    etat = models.CharField(max_length=10, null=False, choices=ETAT_CHOICES)
-
-    STATUT_SALE = 'sale'
-    STATUT_PROPRE = 'propre'
-    STATUT_CHOICES = [
-        (STATUT_SALE, 'Sale'),
-        (STATUT_PROPRE, 'Propre'),
-    ]
-    statut = models.CharField(max_length=10, null=True, choices=STATUT_CHOICES)
+    type_chambre = models.ForeignKey(
+        'TypeChambre',
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='chambres'
+    )
 
     prix = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateField(auto_now=True)

@@ -1,13 +1,47 @@
-{% extends "base.html" %}
-
-{% block content %}
-    <div class="container text-center">
-    <h1>Supprimer la réservation</h1>
-    <p>Voulez-vous vraiment supprimer la réservation N° "{{ reservation.id }}" ?</p>
-    <form method="post">
-        {% csrf_token %}
-        <input type="submit" class="btn btn-danger" value="Supprimer">
-        </form>
-        <a href="{% url 'liste_reservation' %}" class="btn btn-secondary">Annuler</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Supprimer la Réservation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+        }
+        #menu {
+            width: 16.67%;
+            background-color: #343a40;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        #content {
+            width: 83.33%;
+            padding: 20px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    {% include 'menu.html' %}
+    <div id="content">
+        <div class="container mt-4">
+            <div class="card">
+                <div class="card-header bg-danger text-white text-center">
+                    <h1>Supprimer la Réservation</h1>
+                </div>
+                <div class="card-body text-center">
+                    <p>Voulez-vous vraiment supprimer la réservation N° "{{ reservation.id }}" ?</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-danger" value="Supprimer">
+                    </form>
+                    <a href="{% url 'liste_reservation' %}" class="btn btn-secondary mt-2">Annuler</a>
+                </div>
+            </div>
+        </div>
     </div>
-{% endblock %}
+</body>
+</html>
