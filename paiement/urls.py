@@ -8,6 +8,14 @@ urlpatterns = [
     path('autres-revenus-couts/new/', views.autre_revenu_cout_create, name='autre_revenu_cout_create'),
     path('autres-revenus-couts/<int:pk>/edit/', views.autre_revenu_cout_update, name='autre_revenu_cout_update'),
     path('autres-revenus-couts/<int:pk>/delete/', views.autre_revenu_cout_delete, name='autre_revenu_cout_delete'),
+
+    # paiement
+
+    path('subscribe/', views.subscribe, name='subscribe'),
+    path('payment/<int:subscription_id>/', views.payment, name='payment'),
+    path('return/', views.payment_return, name='payment_return'),
+    path('cancel/', views.payment_cancel, name='payment_cancel'),
+    path('notification/', views.payment_notification, name='payment_notification'),
 ]
 
    

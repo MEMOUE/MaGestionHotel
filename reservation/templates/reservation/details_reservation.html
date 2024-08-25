@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de la Réservation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Détails de la Réservation</h1>
+        <div class="card">
+            <div class="card-body">
+                <p><strong>Nom:</strong> {{ reservation.nom_client }} {{ reservation.prenom_client }}</p>
+                <p><strong>Date d'arrivée:</strong> {{ reservation.date_arrivee }}</p>
+                <p><strong>Date de départ:</strong> {{ reservation.date_depart }}</p>
+                <p><strong>Nombre de jours:</strong> {{ nombre_jours }}</p>
+                <p><strong>Chambre:</strong> {{ reservation.chambre }}</p>
+                <p><strong>Adultes supplémentaires:</strong> {{ reservation.adulte_suplementaire }}</p>
+                <p><strong>Enfants supplémentaires:</strong> {{ reservation.enfant_suplementaire }}</p>
+                <p><strong>Paiement anticipé:</strong> {{ reservation.paiement_anticipe }} FCFA</p>
+                <p><strong>Frais supplémentaires:</strong> {{ reservation.frais_suplementaire }} FCFA</p>
+                <p><strong>Statut:</strong> {{ reservation.get_statut_display }}</p>
+                <p><strong>Note:</strong> {{ reservation.note }}</p>
+                <p><strong>Numéro de facture:</strong> {{ reservation.numero_facture }}</p>
+                <a href="{% url 'planning' %}" class="btn btn-primary">Retour à la planification</a>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

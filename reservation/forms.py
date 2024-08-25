@@ -1,5 +1,3 @@
-# forms.py
-
 from django import forms
 from .models import Reservation
 from chambre.models import Chambre
@@ -12,12 +10,14 @@ class ReservationForm(forms.ModelForm):
         widgets = {
             'nom_client': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nom du client'}),
             'prenom_client': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Prénom du client'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Téléphone du client'}),  # Nouveau champ téléphone
             'date_arrivee': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Date d\'arrivée'}),
             'date_depart': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Date de départ'}),
             'adulte_suplementaire': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Adulte supplémentaire'}),
             'enfant_suplementaire': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enfant supplémentaire'}),
             'paiement_anticipe': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Paiement anticipé'}),
             'frais_suplementaire':  forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Frais supplémentaires'}),
+            'remise': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Remise appliquée'}),  # Nouveau champ remise
             'chambre': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Chambre choisie'}),
             'statut': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Statut'}),
             'note': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Notes', 'rows': 2, 'cols': 30}),
@@ -43,11 +43,17 @@ class ReservationForm(forms.ModelForm):
             'frais_suplementaire': {
                 'invalid': "Veuillez fournir un montant valide pour les frais supplémentaires.",
             },
+            'remise': {
+                'invalid': "Veuillez fournir un montant valide pour la remise.",  # Message d'erreur pour remise
+            },
             'chambre': {
                 'required': "Veuillez sélectionner une chambre.",
             },
             'statut': {
                 'required': 'Veuillez sélectionner un statut.',
+            },
+            'telephone': {
+                'invalid': "Veuillez fournir un numéro de téléphone valide.",  # Message d'erreur pour téléphone
             },
         }
 

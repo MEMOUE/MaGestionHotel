@@ -10,12 +10,14 @@ class BaseReservation(models.Model):
     proprietaire = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     nom_client = models.CharField(max_length=50)
     prenom_client = models.CharField(max_length=150)
+    telephone = models.CharField(max_length=15, null=True, blank=True)  # Nouveau champ pour le téléphone
     date_arrivee = models.DateField(null=True)
     date_depart = models.DateField(null=True)
     adulte_suplementaire = models.IntegerField(null=True)
     enfant_suplementaire = models.IntegerField(null=True)
     paiement_anticipe = models.FloatField(default=0)
     frais_suplementaire = models.FloatField(default=0)
+    remise = models.FloatField(default=0, null=True, blank=True)  # Nouveau champ pour la remise
     chambre = models.ForeignKey(Chambre, on_delete=models.CASCADE)
     STATUT_CHOICES = [
         ('reservée', 'Reservée'),
@@ -31,6 +33,7 @@ class BaseReservation(models.Model):
 
     def __str__(self):
         return f"{self.nom_client} {self.prenom_client}"
+
 
 class Reservation(BaseReservation):
     pass

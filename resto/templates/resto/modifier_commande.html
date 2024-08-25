@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier la Commande</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container my-4">
+        <h1 class="mb-4">Modifier la commande</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.plat.label_tag }}
+                {{ form.plat }}
+            </div>
+            <div class="mb-3">
+                {{ form.quantite.label_tag }}
+                {{ form.quantite }}
+            </div>
+            <div class="mb-3 form-check">
+                {{ form.annulee }}
+                {{ form.annulee.label_tag }}
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -68,8 +68,8 @@
             <thead>
                 <tr>
                     <th>Type</th>
-                    <th>Temps</th>
                     <th>Montant</th>
+                    <th>Note</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -77,8 +77,8 @@
                 {% for revenu_cout in revenus_couts %}
                 <tr>
                     <td>{{ revenu_cout.type }}</td>
-                    <td>{{ revenu_cout.temps }}</td>
                     <td>{{ revenu_cout.montant }}</td>
+                    <td>{{ revenu_cout.note}}</td>
                     <td>
                         <a href="{% url 'autre_revenu_cout_update' revenu_cout.pk %}" class="btn btn-sm btn-info"><i class="fas fa-edit"></i> </a>
                         <a href="{% url 'autre_revenu_cout_delete' revenu_cout.pk %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i> </a>

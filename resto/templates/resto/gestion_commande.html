@@ -1,0 +1,79 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Commandes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container my-4">
+        <a href="{% url 'planning' %}" class="btn btn-secondary mb-4">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+
+        <h3 class="mb-4">Gestion des commandes pour la réservation de <span class="text-success"> {{ reservation.nom_client }} {{ reservation.prenom_client }}</span></h3>
+
+        <!-- Formulaire pour Ajouter une Nouvelle Commande -->
+        <!-- <h2 class="mb-4">Ajouter une nouvelle commande</h2> -->
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.plat.label_tag }}
+                {{ form.plat }}
+            </div>
+            <div class="mb-3">
+                {{ form.quantite.label_tag }}
+                {{ form.quantite }}
+            </div>
+            <div class="mb-3 form-check">
+                {{ form.annulee }}
+                {{ form.annulee.label_tag }}
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Ajouter la commande
+            </button>
+        </form>
+
+        <!-- Liste des Commandes Existantes -->
+        <h2 class="mt-5 mb-3">Commandes existantes</h2>
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Plat</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                        <th>Annulée</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for commande in commandes %}
+                    <tr>
+                        <td>{{ commande.plat.nom_menu }}</td>
+                        <td>{{ commande.quantite }}</td>
+                        <td>{{ commande.prix_total }} <span class="text-danger">FCFA</span></td>
+                        <td>{{ commande.annulee|yesno:"Oui,Non" }}</td>
+                        <td>
+                            <a href="{% url 'modifier_commande' commande.id %}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i> Modifier
+                            </a>
+                            <!-- Uncomment the next line if you implement delete functionality -->
+                            <!-- <a href="{% url 'supprimer_commande' commande.id %}" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i> Supprimer
+                            </a> -->
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

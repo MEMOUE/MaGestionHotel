@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facture</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { width: 60%; max-width: 500px; margin: auto; }
+        .header, .footer { text-align: center; }
+        .content { margin-top: 20px; }
+        @media print {
+            .no-print { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ configuration.nom }}</h1>
+            <p>Téléphone : {{ configuration.telephone }}</p>
+            <p>Adresse : {{ configuration.adresse }}</p>
+        </div>
+        <div class="content">
+            <h2>Facture N° {{ reservation.numero_facture }}</h2>
+            <p><strong>Nom :</strong> {{ reservation.nom_client }} {{ reservation.prenom_client }}</p>
+            <p><strong>Date d'arrivée :</strong> {{ reservation.date_arrivee }}</p>
+            <p><strong>Date de départ :</strong> {{ reservation.date_depart }}</p>
+            <p><strong>Nombre de jours :</strong> {{ nombre_jours }}</p>
+            <p><strong>Chambre :</strong> {{ reservation.chambre }}</p>
+            <p><strong>Adultes supplémentaires :</strong> {{ reservation.adulte_suplementaire }}</p>
+            <p><strong>Enfants supplémentaires :</strong> {{ reservation.enfant_suplementaire }}</p>
+            <p><strong>Paiement anticipé :</strong> {{ reservation.paiement_anticipe }} FCFA</p>
+            <p><strong>Frais supplémentaires :</strong> {{ reservation.frais_suplementaire }} FCFA</p>
+            <h3>Montant total à payer : {{ montant_total }} FCFA</h3>
+        </div>
+        <div class="footer">
+            <p>Fait le : {{ current_time }}</p>
+        </div>
+        <div class="no-print">
+            <a href="{% url 'genere_et_affiche_facture' reservation.id %}" class="btn btn-primary">Télécharger la Facture</a>
+            <button onclick="window.print();" class="btn btn-secondary">Imprimer la Facture</button>
+        </div>
+    </div>
+</body>
+</html>

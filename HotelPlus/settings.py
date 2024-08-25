@@ -210,8 +210,13 @@ SOCIALACCOUNT_PROVIDERS = {
         #}
         
     }
-
-
 }
 
+
+# Paiement
+
+ORANGE_MONEY_CLIENT_ID = '1ceac622-1555-43c3-b041-af9daa932a8b'
+ORANGE_MONEY_CLIENT_SECRET = 'eeb6dae4-c698-4985-9591-8f72deee49b3w'
+ORANGE_MONEY_PAYMENT_URL = 'https://api.orange.com/orange-money-webpay-cis/v1/webpayment'
+ORANGE_MONEY_TOKEN_URL = 'https://api.orange.com/oauth/v3/token'
 

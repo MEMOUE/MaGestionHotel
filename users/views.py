@@ -35,7 +35,7 @@ def inscription(request):
             full_url = f"{settings.SITE_URL}{verification_url}"
             send_mail(
                 'Verify your email address',
-                f'Please click the following link to verify your email: {full_url}',
+                f'Cliquer sur ce lien pour verifier votre email: {full_url}',
                 settings.DEFAULT_FROM_EMAIL,
                 [user.email],
                 fail_silently=False,
@@ -84,7 +84,7 @@ def connexion(request):
                         else:
                             return redirect("home-users")
                     else:
-                        messages.error(request, "Veuillez vérifier votre email avant de vous connecter.")
+                        messages.error(request, "Veuillez vérifier votre email ou votre mot de passe.")
                 else:
                     messages.error(request, "Votre compte est désactivé.")
             else:

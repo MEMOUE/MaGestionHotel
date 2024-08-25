@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GestionHotel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
             display: flex;
@@ -70,6 +71,11 @@
             padding: 10px;
             border-radius: 5px;
         }
+        .btn-vertical {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body onload="scrollToLastReservation()">
@@ -101,7 +107,7 @@
                                 <th>N° Chambre</th>
                                 <th>Prix Chambre</th>
                                 {% for date in dates_uniques %}
-                                    <th>{{ date }}</th>
+                                    <th>{{ date|date:"d/m/Y" }}</th>
                                 {% endfor %}
                             </tr>
                         </thead>
@@ -112,37 +118,57 @@
                                     <td>{{ data.prix }}</td>
                                     {% for reservation in data.reservations %}
                                         <td class="{% if reservation.statut == 'confirmée' %}bg-success {% elif reservation.statut == 'reservée' %}bg-warning {% elif reservation.statut == 'terminée' %}bg-danger{% endif %}">
-                                            <span class="reservation-details" data-bs-toggle="modal" data-bs-target="#exampleModal{{ reservation.id }}" data-adresse="{{ reservation.adresse_client }}">
+                                            <span class="reservation-details" data-bs-toggle="modal" data-bs-target="#reservationModal{{ reservation.id }}">
                                                 {{ reservation.nom_client }} {{ reservation.prenom_client }}
                                             </span>
 
                                             <!-- Modal -->
-                                            <div class="modal fade" id="exampleModal{{ reservation.id }}" tabindex="-1" aria-labelledby="exampleModalLabel{{ reservation.id }}" aria-hidden="true">
+                                            <div class="modal fade" id="reservationModal{{ reservation.id }}" tabindex="-1" aria-labelledby="reservationModalLabel{{ reservation.id }}" aria-hidden="true">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel{{ reservation.id }}">Information client</h1>
+                                                            <h1 class="modal-title fs-5" id="reservationModalLabel{{ reservation.id }}">Options de Réservation</h1>
                                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <p>Nom: {{ reservation.nom_client }}</p>
-                                                            <p>Prénom: {{ reservation.prenom_client }}</p>
-                                                            <p>Date de arrivée: {{ reservation.date_arrivee }}</p>
-                                                            <p>Date de depart: {{ reservation.date_depart }}</p>
-                                                            <p>Adulte Suplementaire: {{ reservation.adulte_suplementaire }}</p>
-                                                            <p>Enfant Suplementaire: {{ reservation.enfant_suplementaire }}</p>
-                                                            <p>Paiement Anticipe: {{ reservation.paiement_anticipe }}</p>
-                                                            <p>Frais Suplementaire: {{ reservation.frais_suplementaire }}</p>
-                                                            <p>Chambre: {{ reservation.chambre }}</p>
-                                                            <p>ID: {{ reservation.id }}</p>
-                                                            <p>Note: {{ reservation.note }}</p>
+
+                                                        <div class="modal-footer flex-column">
+                                                            <a href="details_reservation/{{ reservation.id }}" class="btn btn-secondary btn-vertical" target="_blank">
+                                                                <i class="fas fa-info-circle"></i> Détails
+                                                            </a>
+                                                        
+                                                            {% if reservation.statut != 'terminée' %}
+                                                                <a href="modifier_reservation/{{ reservation.id }}" class="btn btn-primary btn-vertical">
+                                                                    <i class="fas fa-edit"></i> Modifier
+                                                                </a>
+                                                                <a href="copier_reservation_dans_historique/{{ reservation.id }}" class="btn btn-success btn-vertical">
+                                                                    <i class="fas fa-check"></i> Terminer
+                                                                </a>
+                                                                <a href="supprimer_reservation/{{ reservation.id }}" class="btn btn-danger btn-vertical">
+                                                                    <i class="fas fa-trash"></i> Supprimer
+                                                                </a>
+                                                                <a href="/resto/reservation/{{ reservation.id }}/commandes/" class="btn btn-warning btn-vertical">
+                                                                    <i class="fas fa-plus"></i> Ajouter Commande
+                                                                </a>
+                                                            {% else %}
+                                                                <button class="btn btn-primary btn-vertical" disabled>
+                                                                    <i class="fas fa-edit"></i> Modifier
+                                                                </button>
+                                                                <button class="btn btn-success btn-vertical" disabled>
+                                                                    <i class="fas fa-check"></i> Terminer
+                                                                </button>
+                                                                <button class="btn btn-danger btn-vertical" disabled>
+                                                                    <i class="fas fa-trash"></i> Supprimer
+                                                                </button>
+                                                                <button class="btn btn-warning btn-vertical" disabled>
+                                                                    <i class="fas fa-plus"></i> Ajouter Commande
+                                                                </button>
+                                                            {% endif %}
+                                                        
+                                                            <a href="genere_et_affiche_facture/{{ reservation.id }}" class="btn btn-info btn-vertical">
+                                                                <i class="fas fa-file-invoice"></i> Facture
+                                                            </a>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <a href="modifier_reservation/{{ reservation.id }}" class="btn btn-primary">Modifier</a>
-                                                            <a href="supprimer_reservation/{{ reservation.id }}" class="btn btn-danger">Supprimer</a>
-                                                            <a href="copier_reservation_dans_historique/{{ reservation.id }}" class="btn btn-success">Terminer</a>
-                                                            <a href="facture/{{ reservation.id }}" class="btn btn-info">Facture</a>
-                                                        </div>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -156,18 +182,7 @@
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function scrollToLastReservation() {
-            const lastReservationDate = new Date("{{ last_reservation_date }}");
-            const cells = document.querySelectorAll('th');
-            cells.forEach((cell, index) => {
-                if (new Date(cell.innerText) >= lastReservationDate) {
-                    cell.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            });
-        }
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

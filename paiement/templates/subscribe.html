@@ -1,0 +1,11 @@
+<!-- subscribe.html -->
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Choisissez votre abonnement</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Souscrire</button>
+  </form>
+{% endblock %}

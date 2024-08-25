@@ -28,14 +28,19 @@ def liste_chambre(request):
 def modifier_chambre(request, chambre_id):
     chambre = get_object_or_404(Chambre, id=chambre_id)
     if request.method == 'POST':
-        form = ChambreForm(request.POST, instance=chambre)
+        print("Données POST : ", request.POST)  # Affiche les données POST
+        # Passez user via kwargs uniquement
+        form = ChambreForm(data=request.POST, instance=chambre, user=request.user)
         if form.is_valid():
             form.save()
             return redirect('liste_chambre')
+        else:
+            print("Formulaire non valide : ", form.errors)
     else:
-        form = ChambreForm(instance=chambre)
+        form = ChambreForm(instance=chambre, user=request.user)
 
     return render(request, 'chambre/modifier_chambre.html', {'form': form, 'chambre': chambre})
+
 
 def supprimer_chambre(request, chambre_id):
     chambre = get_object_or_404(Chambre, id=chambre_id)

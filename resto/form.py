@@ -1,6 +1,6 @@
 from django import forms
 
-from resto.models import Restaurant
+from resto.models import Commande, Restaurant
 
 
 class RestoForm(forms.ModelForm):
@@ -21,3 +21,13 @@ class RestoForm(forms.ModelForm):
             super(RestoForm, self).__init__(*args, **kwargs)
             for field_name, field in self.fields.items():
                 field.widget.attrs['class'] = 'form-control white-input'
+
+class CommandeForm(forms.ModelForm):
+    class Meta:
+        model = Commande
+        fields = ['plat', 'quantite', 'annulee']
+        widgets = {
+            'plat': forms.Select(attrs={'class': 'form-select'}),
+            'quantite': forms.NumberInput(attrs={'class': 'form-control'}),
+            'annulee': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        }
